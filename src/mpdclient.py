@@ -567,16 +567,22 @@ class Mpc(object):
         Position can be a range like num-num
         If position is 0, remove the current playing song."""
         if "-" in position:
-            begin, end = position.split("-")
+            begin, end = position.split("-")[:2]
             begin = int(begin) - 1
             end = int(end) - 1
+
+            if begin > end:
+                printByName("delete_wrong_order", begin=begin+1, end=end+1)
+                return None
 
             printByName("delete", position=range(begin+1, end+1))
 
             self.mpc.authenticate("delete")
             self.mpc.command_list_ok_begin()
+            diff = 0
             for pos in range(begin, end):
-                self.mpc.delete(pos)
+                self.mpc.delete(pos - diff)
+                diff += 1
             return self.mpc.command_list_end()
 
         if position == "0":
