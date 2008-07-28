@@ -39,6 +39,8 @@ setup(name = boogie.__name__,
             "License :: OSI Approved :: GNU General Public License (GPL)",
             "Programming Language :: Python",
             "Topic :: Multimedia :: Sound/Audio",
-            ]
+            ],
+        keywords = ["mpd", "mpc", "music console",],
+        requires = ["ipython", "mako"],
     )
 
