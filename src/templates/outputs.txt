@@ -1,0 +1,37 @@
+##
+## vim: set et sts=4 ts=4 tw=80 ft=mako :
+##
+## Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+##
+## This file is part of Boogie mpd client. Boogie is free software; you can
+## redistribute it and/or modify it under the terms of the GNU General Public
+## License version 2, as published by the Free Software Foundation.
+##
+## Boogie is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+## A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place, Suite 330, Boston, MA  02111-1307  USA
+##
+\
+<%doc>
+    Template for outputs subcommand.
+    Example output:
+    Output: 1 Name: pulseaudio output Status: enabled
+</%doc>\
+<%
+    from boogie.colour import bold, cyan, green, magenta, red, yellow
+%>\
+\
+%for output in outputs:
+${yellow(_("Output"))}: ${bold(str(int(output["outputid"]) + 1))} \
+${yellow(_("Name"))}: ${green(output["outputname"])} \
+${yellow(_("Status"))}: \
+%  if int(output["outputenabled"]):
+${bold(cyan(_("enabled")))}
+%  else:
+${bold(red(_("disabled")))}
+%  endif
+%endfor

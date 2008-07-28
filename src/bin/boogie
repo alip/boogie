@@ -1,0 +1,162 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim: set sw=4 ts=4 sts=4 et tw=80 :
+#
+# Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+#
+# This file is part of Boogie mpd client. Boogie is free software; you can
+# redistribute it and/or modify it under the terms of the GNU General Public
+# License version 2, as published by the Free Software Foundation.
+#
+# Boogie is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+"""Boogie mpd client
+"""
+
+import os
+import sys
+import re
+import atexit
+import textwrap
+import warnings
+
+# Boogie
+import boogie
+from boogie.config import config_data
+from boogie.mpdclient import mpd_command_dict, Mpc
+from boogie.colour import bold
+from boogie.i18n import _
+
+mpd_commands = mpd_command_dict.keys()
+mpd_commands.sort()
+
+def usage():
+    """Print usage."""
+    name, version = (boogie.__name__, boogie.__version__)
+
+    pager = os.environ.get("PAGER", "less")
+    p = os.popen(pager, "w")
+    sys.stdout, p = p, sys.stdout
+
+    print _("Usage: %s [-ns] <command> [command args]...") % name
+    print _("%s version: %s") % (bold(name), version)
+    print
+    print bold(_("Options:"))
+
+    # Extract command names and usage information of mpd commands.
+    command_groups = {}
+    max_length = 0
+    for command in mpd_commands:
+        title = mpd_command_dict[command][3]
+        if title not in command_groups:
+            command_groups[title] = []
+
+        # Usage
+        if mpd_command_dict[command][5]:
+            definition = command + " " + mpd_command_dict[command][5]
+        else:
+            definition = command
+
+        command_groups[title].append(definition)
+        if len(definition) > max_length:
+            max_length = len(definition)
+
+    print "-ns, --no-status" + " " * (max_length - 15),
+    print _("Prevent status from being printed on completion of some of the commands")
+    print bold(_("%s Commands:") % name)
+    print "help" + " " * (max_length - 2) + _("Display this help")
+    print "console" + " " * (max_length - 5) + _("Launch mpd shell")
+
+    # Sort, wrap and print them out.
+    wrapper = textwrap.TextWrapper()
+    wrapper.break_long_words = False
+    if "COLUMNS" in os.environ:
+        wrapper.width = os.environ["COLUMNS"]
+    titles = (_("Admin Commands"), _("Informational Commands"),
+        _("Database Commands"), _("Playlist Commands"), _("Playback Commands"),
+        _("Miscellaneous Commands"))
+    for title in titles:
+        print bold(title + ":")
+        for item in command_groups[title]:
+            command = item.split(" ")[0]
+            command_help = mpd_command_dict[command][6]
+
+            if len(item) != max_length:
+                item += " " * (max_length - len(item))
+            wrapper.subsequent_indent = " " * (len(item) + 2)
+            print item + "  " + wrapper.fill(command_help)
+
+    p, sys.stdout = sys.stdout, p
+
+def main():
+    """Main function that does everything."""
+    # Command line switches
+    if "-ns" in sys.argv:
+        after_status = False
+        sys.argv.remove("-ns")
+    elif "--no-status" in sys.argv:
+        after_status = False
+        sys.argv.remove("--no-status")
+    else:
+        after_status = None
+
+    mpc = Mpc(after_status=after_status)
+
+    # Print status when run without arguments
+    if len(sys.argv) == 1:
+        subcommand = "status"
+        arguments = []
+    elif sys.argv[1] == "help":
+        usage()
+        sys.exit(0)
+    elif sys.argv[1] == "console":
+        from boogie.console import mpdshell
+        mpdshell(mpc)
+        sys.exit(0)
+    else:
+        subcommand = sys.argv[1]
+        arguments = sys.argv[2:]
+
+    # Aliases
+    if config_data.has_option("alias", subcommand):
+        subcommand = config_data.get("alias", subcommand)
+
+    if not subcommand in mpd_commands:
+        print >>sys.stderr, _("unknown command '%s'") % subcommand
+        usage()
+        sys.exit(1)
+    elif (mpd_command_dict[subcommand][0] is not None and
+            len(arguments) not in mpd_command_dict[subcommand][0]):
+        print >>sys.stderr, _("usage: %s %s %s") % (boogie.__name__, subcommand,
+                mpd_command_dict[subcommand][5])
+        sys.exit(1)
+
+    # Convert them to correct type
+    if mpd_command_dict[subcommand][1] is not None:
+        index = 0
+        while index < len(arguments):
+            try:
+                arguments[index] = mpd_command_dict[subcommand][1][index](arguments[index])
+            except ValueError:
+                print >>sys.stderr, _("usage: %s %s %s") % (boogie.__name__,
+                        subcommand, mpd_command_dict[subcommand][5])
+                sys.exit(1)
+            index += 1
+
+    mpc.connect()
+    atexit.register(mpc.disconnect)
+
+    if arguments:
+        getattr(mpc, subcommand)(*arguments)
+    else:
+        getattr(mpc, subcommand)()
+
+if __name__ == '__main__':
+    main()
+

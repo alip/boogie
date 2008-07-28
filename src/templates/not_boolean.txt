@@ -1,0 +1,38 @@
+##
+## vim: set et sts=4 ts=4 tw=80 ft=mako :
+##
+## Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+##
+## This file is part of Boogie mpd client. Boogie is free software; you can
+## redistribute it and/or modify it under the terms of the GNU General Public
+## License version 2, as published by the Free Software Foundation.
+##
+## Boogie is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+## A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place, Suite 330, Boston, MA  02111-1307  USA
+##
+\
+<%doc>
+    Template called when the user entered an invalid boolean value.
+    state is the given boolean value
+    boolean_true is a list of true values
+    boolean_false is a list of false values
+</%doc>\
+<%
+    from boogie.colour import bold, red, cyan
+
+    index=0
+    values="<"
+    while index < len(boolean_true):
+        values += boolean_true[index] + "|" + boolean_false[index]
+        if index != len(boolean_true) - 1:
+            values += "|"
+        index += 1
+    values += ">"
+%>\
+\
+${bold(red(_('"%s" is not a boolean value') % state))}: ${cyan(values)}

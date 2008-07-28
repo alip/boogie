@@ -1,0 +1,634 @@
+#compdef boogie
+
+# vim: set et sw=4 sts=4 ts=4 ft=zsh :
+# ZSH completion for boogie, based on _mpc
+# Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+# Distributed under the terms of the GNU General Public License v2
+
+local MPD_MUSIC_DIR BOOGIE_PLAYLIST_MATCHER
+
+# set this style to the music_directory of mpd to get _files based completion
+# for commands like "add"
+zstyle -s ":completion:${curcontext}:" mpd-music-directory MPD_MUSIC_DIR
+
+# matcher used for playlist completion
+zstyle -s ":completion:${curcontext}:" mpd-playlist-matcher \
+  BOOGIE_PLAYLIST_MATCHER
+: ${BOOGIE_PLAYLIST_MATCHER:='m:{a-z}={A-Z} l:|=**'}
+
+# this one is used to configure the behaviour of _boogie_helper_songnumbers,
+# see _pids for the original
+zstyle -s ":completion:${curcontext}:song-numbers" insert-song-numbers \
+  OUT || OUT=single
+
+_boogie_command() {
+    local boogie_cmds
+
+    boogie_cmds=(
+        help:"Display help"
+        console:"Launch mpd shell"
+        disableoutput:"Turn an output off"
+        enableoutput:"Turn an output on"
+        kill:"Stop MPD from running, in a safe way"
+        update:"Scan path for updates, path defaults to music_directory"
+        commands:"Show which commands you have has access to"
+        notcommands:"Show which commands you don't have has access to"
+        outputs:"Show information about all outputs"
+        stats:"Display statistics"
+        status:"Report the current status of mpd"
+        tagtypes:"Get a list of available song metadata"
+        urlhandlers:"Get a list of available URL handlers"
+        count:"Retrieve the number of songs and their total playtime matching given query"
+        find:"Find songs with a case sensitive, exact match"
+        list:"Show all tags of given type"
+        listall:"Lists all directories and filenames in the given path recursively"
+        listallinfo:"Lists all information about songs in the given path recursively"
+        lsinfo:"List contents of the given directory"
+        lsplaylists:"List playlists"
+        search:"Finds songs with a case insensitive match"
+        add:"Add a song to the current playlist"
+        addid:"Add a song to the current playlist at the given position"
+        clear:"Clear the current playlist"
+        currentsong:"Display the metadata of the current song"
+        delete:"Delete a song from playlist"
+        deleteid:"Delete a song from playlist specifying its id"
+        listplaylist:"List files in playlist"
+        listplaylistinfo:"List songs in playlist"
+        load:"Load the given file as a playlist"
+        move:"Move song in playlist"
+        moveid:"Move song in playlist"
+        playlist:"Display metadata for song in playlist"
+        playlistadd:"Add song to playlist"
+        playlistclear:"Clear playlist"
+        playlistdelete:"Delete song from playlist"
+        playlistfind:"Search for songs in the current playlist with strict matching"
+        playlistid:"Display meteadata for song in playlist"
+        playlistmove:"Move song to a position in playlist"
+        playlistsearch:"Search case-insensitively with partial matches for songs in the current playlist"
+        plchanges:"Displays changed songs currently in the playlist since the given playlist version"
+        plchangesposid:"Displays changed songs currently in the playlist since the given playlist version"
+        rename:"Rename a playlist"
+        rm:"Remove playlist"
+        save:"Save a playlist"
+        seek:"Seeks to the specified position in the given song"
+        seekid:"Seeks to the specified position in the song with the given id"
+        shuffle:"Shuffle the current playlist"
+        stop:"Stop the currently playing playlists"
+        swap:"Swap positions of two songs in the playlist"
+        swapid:"Swap positions of two songs in the playlist"
+        volume:"Sets volume to <num> or adjusts by [+-]<num>"
+        crossfade:"Set and display crossfade settings"
+        next:"Play the next song in the current playlist"
+        pause:"Pauses the currently playing song"
+        play:"Start playing at the given position or 1"
+        playid:"Start playing the given song id or 1"
+        previous:"Play the previous song in the current playlist"
+        random:"Toggle random mode, or specify state"
+        repeat:"Toggle repeat mode, or specify state"
+        version:"Display version of MPD"
+        )
+
+    # Grab aliases
+    typeset -A boogie_aliases
+    eval "`python <<EOF
+from boogie.config import config_data
+if config_data.has_section('alias'):
+    for name, value in config_data.items('alias'):
+        print "boogie_aliases[%s]='%s'" % (name, value)
+EOF`"
+
+    if (( CURRENT == 1 )); then
+        _describe -t command "boogie commands" boogie_cmds
+    else
+        local curcontext="$curcontext"
+    fi
+
+    local cmd=$words[1]
+
+    # Check if the command is an alias
+    if [[ -n "${boogie_aliases[$cmd]}" ]]; then
+        cmd="${boogie_aliases[$cmd]}"
+    fi
+
+    local curcontext="${curcontext%:*}:boogie-${cmd}"
+    _call_function ret _boogie_$cmd
+}
+
+_boogie_helper_bool() {
+  local expl states
+  states=(on off yes no 1 0 true false)
+  _wanted states expl boolean compadd $expl -a states
+}
+
+(( $+functions[_boogie_helper_playlists] )) ||
+_boogie_helper_playlists() {
+  local list expl
+  list=($(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+l = c.mpc.lsinfo()
+for v in l:
+    if "playlist" in v:
+        print v["playlist"]
+c.disconnect()
+EOF))
+  _wanted list expl playlist compadd -M $BOOGIE_PLAYLIST_MATCHER $expl -a list
+}
+
+(( $+functions[_boogie_helper_files] )) ||
+_boogie_helper_files() {
+  if [[ -n $MPD_MUSIC_DIR ]]; then
+    _files -W $MPD_MUSIC_DIR
+    return
+  fi
+
+  local -U list expl
+  if [[ $words[CURRENT] != */* ]]; then
+    list=( ${${(f)"$(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+l = c.mpc.listall()
+for v in l:
+    if "file" in v:
+        print v["file"]
+c.disconnect()
+EOF)"}%%/*})
+    _wanted files expl file compadd -qS/ -a list
+  else
+    list=(${(f)"$(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+l = c.mpc.listall()
+for v in l:
+    if "file" in v and v["file"].startswith("$words[CURRENT]"):
+        print v["file"]
+c.disconnect()
+EOF)"})
+    _wanted files expl file _multi_parts / list
+  fi
+}
+
+(( $+functions[_boogie_helper_directories] )) ||
+_boogie_helper_directories() {
+  if [[ -n $MPD_MUSIC_DIR ]]; then
+    _files -/ -W $MPD_MUSIC_DIR
+    return
+  fi
+
+  local -U list expl
+  if [[ $words[CURRENT] != */* ]]; then
+    list=( ${${(M)${(f)"$(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+l = c.mpc.listall()
+for v in l:
+    if "file" in v:
+        print v["file"]
+c.disconnect()
+EOF)"}:#*/*}%%/*})
+    _wanted directories expl directory compadd -qS/ -a list
+  else
+    list=(${(f)"$(python <<EOF
+import os
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+l = c.mpc.listall()
+for v in l:
+    if "directory" in v and v["directory"].startswith("$words[CURRENT]"):
+        print v["directory"]
+c.disconnect()
+EOF)"})
+    _wanted directories expl directory _multi_parts / list
+  fi
+}
+
+(( $+functions[_boogie_helper_songids] )) ||
+_boogie_helper_songids() {
+    local out sn list expl MATCH all NM ret=1
+
+    _tags song-numbers || return 1
+
+    if [[ "$PREFIX" = [0-9]# ]]; then
+        all=()
+        MATCH="*${(Q)PREFIX}[0-9]#*"
+    else
+        all=(-U)
+        MATCH="(#i)*${(Q)PREFIX}*"
+        NM="$compstate[nmatches]"
+    fi
+
+    out=("${(@f)$(_call_program song-numbers python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+cs = c.mpc.currentsong()
+l = c.mpc.playlistinfo()
+l.sort(key=lambda s: int(s["id"]))
+for s in l:
+    line=""
+    if cs and cs["id"] == s["id"]:
+        line += ">"
+    else:
+        line += " "
+    line += s["id"] + ") "
+    if "title" in s:
+        line += s.get("artist", "???") + " - " + s["title"]
+    else:
+        line += s["file"]
+    print line
+c.disconnect()
+EOF)}")
+    out=("${(@M)out[@]:#${~MATCH}}")
+
+    sn=("${(@)${(@M)out}//(#b)(#s)(\#|[ >]#)([0-9]#)*/$match[2]}")
+    list=("${(@Mr:COLUMNS-1:)out}")
+
+    _wanted -V 'song numbers' expl 'song number' \
+        compadd "$@" -ld list "$all[@]" -a sn && ret=0
+
+    if [[ -n "$all" ]]; then
+        case "$OUT" in
+            menu)
+                compstate[insert]=menu
+                ;;
+            single)
+                [[ $compstate[nmatches] -ne NM+1 ]] &&
+                compstate[insert]=
+                ;;
+            *)
+                [[ ${#:-$PREFIX} -gt ${#compstate[unambiguous]} ]] &&
+                compstate[insert]=menu
+                ;;
+        esac
+    fi
+
+    return ret
+}
+
+(( $+functions[_boogie_helper_songnumbers] )) ||
+_boogie_helper_songnumbers() {
+    local out sn list expl MATCH all NM ret=1
+
+    _tags song-numbers || return 1
+
+    if [[ "$PREFIX" = [0-9]# ]]; then
+        all=()
+        MATCH="*${(Q)PREFIX}[0-9]#*"
+    else
+        all=(-U)
+        MATCH="(#i)*${(Q)PREFIX}*"
+        NM="$compstate[nmatches]"
+    fi
+
+    out=("${(@f)$(_call_program song-numbers python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+cs = c.mpc.currentsong()
+l = c.mpc.playlistinfo()
+l.sort(key=lambda s: int(s["pos"]))
+for s in l:
+    line=""
+    if cs and cs["id"] == s["id"]:
+        line += ">"
+    else:
+        line += " "
+    line += str(int(s["pos"]) + 1) + ") "
+    if "title" in s:
+        line += s.get("artist", "???") + " - " + s["title"]
+    else:
+        line += s["file"]
+    print line
+c.disconnect()
+EOF)}")
+    out=("${(@M)out[@]:#${~MATCH}}")
+
+    sn=("${(@)${(@M)out}//(#b)(#s)(\#|[ >]#)([0-9]#)*/$match[2]}")
+    list=("${(@Mr:COLUMNS-1:)out}")
+
+    _wanted -V 'song numbers' expl 'song number' \
+        compadd "$@" -ld list "$all[@]" -a sn && ret=0
+
+    if [[ -n "$all" ]]; then
+        case "$OUT" in
+            menu)
+                compstate[insert]=menu
+                ;;
+            single)
+                [[ $compstate[nmatches] -ne NM+1 ]] &&
+                compstate[insert]=
+                ;;
+            *)
+                [[ ${#:-$PREFIX} -gt ${#compstate[unambiguous]} ]] &&
+                compstate[insert]=menu
+                ;;
+        esac
+    fi
+
+    return ret
+}
+
+(( $+functions[_boogie_helper_outputs] )) ||
+_boogie_helper_outputs() {
+    local vals
+    vals=(${(M)${(f)"$(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+ol = c.mpc.outputs()
+for o in ol:
+    print str(int(o["outputid"]) + 1),
+c.disconnect()
+EOF 2>/dev/null)"}})
+    _describe -t outputs output vals
+}
+
+(( $+functions[_boogie_helper_tagtypes] )) ||
+_boogie_helper_tagtypes() {
+    local list expl
+    list=($(python <<EOF
+import boogie.mpdclient as m
+c = m.Mpc()
+c.connect()
+tt = c.mpc.tagtypes()
+for t in tt:
+    print t.lower(),
+c.disconnect()
+EOF))
+
+    _wanted list expl table compadd $expl -a list
+}
+
+# Admin commands
+_boogie_disableoutput() {
+    _boogie_helper_outputs
+}
+
+_boogie_enableoutput() {
+    _boogie_helper_outputs
+}
+
+_boogie_update() {
+    _boogie_helper_directories
+}
+
+# Database commands
+_boogie_find() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+_boogie_list() {
+    if (( $#words <= 3 )); then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+_boogie_listall() {
+    _boogie_helper_files
+}
+
+_boogie_listallinfo() {
+    _boogie_helper_files
+}
+
+_boogie_lsinfo() {
+    _boogie_helper_directories
+}
+
+_boogie_lsplaylists() {
+    _boogie_helper_playlists
+}
+
+_boogie_search() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+_boogie_count() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+# Playlist Commands
+_boogie_add() {
+    _boogie_helper_files
+}
+
+_boogie_addid() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_files
+    else
+        _message "position"
+    fi
+}
+
+_boogie_delete() {
+    _boogie_helper_songnumbers
+}
+
+_boogie_deleteid() {
+    _boogie_helper_songids
+}
+
+_boogie_load() {
+    _boogie_helper_playlists
+}
+
+_boogie_rename() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_playlists
+    else
+        _message "new playlist name"
+    fi
+}
+
+_boogie_move() {
+    if (( $#words <= 3 )); then
+        _boogie_helper_songnumbers
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_moveid() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_songids
+    elif [[ $#words -eq 3 ]]; then
+        _boogie_helper_songnumbers
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_playlist() {
+    _boogie_helper_songnumbers
+}
+
+_boogie_playlistid() {
+    _boogie_helper_songids
+}
+
+_boogie_plchanges() {
+    _message "playlist version"
+}
+
+_boogie_plchangesposid() {
+    _message "playlist version"
+}
+
+_boogie_rm() {
+    _boogie_helper_playlists
+}
+
+_boogie_save() {
+    _boogie_helper_playlist
+}
+
+_boogie_swap() {
+    if (( $#words <= 3 )); then
+        _boogie_helper_songnumbers
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_swapid() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_songids
+    elif [[ $#words -eq 3 ]]; then
+        _boogie_helper_songnumbers
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_listplaylist() {
+    _boogie_helper_playlists
+}
+
+_boogie_listplaylistinfo() {
+    _boogie_helper_playlists
+}
+
+_boogie_playlistadd() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_playlists
+    elif [[ $#words -eq 3 ]]; then
+        _boogie_helper_files
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_playlistclear() {
+    _boogie_helper_playlists
+}
+
+_boogie_playlistdelete() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_playlists
+    elif [[ $#words -eq 3 ]]; then
+        # FIXME Is there anyway to grab ids of songs that are in a playlist?
+        _message "song id"
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_playlistmove() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_playlists
+    elif [[ $#words -eq 3 ]]; then
+        # FIXME Is there anyway to grab ids of songs that are in a playlist?
+        _message "song id"
+    elif [[ $#words -eq 4 ]]; then
+        _message "position"
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_playlistfind() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+_boogie_playlistsearch() {
+    if [[ $#words -eq 2 ]]; then
+        _boogie_helper_tagtypes
+    else
+        _message "pattern"
+    fi
+}
+
+# Playback Commands
+_boogie_pause() {
+    _boogie_helper_bool
+}
+
+_boogie_play() {
+    _boogie_helper_songnumbers
+}
+
+_boogie_playlistid() {
+    _boogie_helper_songids
+}
+
+_boogie_random() {
+    _boogie_helper_bool
+}
+
+_boogie_repeat() {
+    _boogie_helper_bool
+}
+
+_boogie_seek() {
+    if [[ $#words -eq 2 ]]; then
+        _message "floating point percent value"
+    elif [[ $#words -eq 3 ]]; then
+        _boogie_helper_songnumbers
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_seekid() {
+    if [[ $#words -eq 2 ]]; then
+        _message "floating point percent value"
+    elif [[ $#words -eq 3 ]]; then
+        _boogie_helper_songids
+    else
+        _message "nothing"
+    fi
+}
+
+_boogie_volume() {
+  local expl
+  compset -P '[-+]'
+  _wanted list expl volume compadd $expl - {0..100}
+}
+
+_arguments \
+    '-ns|--nostatus[prevent printing song status on completion]' \
+    '*::boogie command:_boogie_command'
+

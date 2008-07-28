@@ -1,0 +1,760 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2008-07-28 22:12+EEST\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: src/console/__init__.py:100
+msgid "mpd console"
+msgstr ""
+
+#: src/console/__init__.py:102 src/console/__init__.py:106
+msgid "leaving mpd console"
+msgstr ""
+
+#: src/console/ipy_profile_mpd.py:44
+msgid "error:"
+msgstr ""
+
+#: src/console/ipy_profile_mpd.py:57
+msgid "%s takes one of %r arguments (%d given)"
+msgstr ""
+
+#: src/console/ipy_profile_mpd.py:68
+msgid "%r is not %s"
+msgstr ""
+
+#: src/console/ipy_profile_mpd.py:121
+msgid "%s takes exactly %d arguments (%d given)"
+msgstr ""
+
+#: src/mpdclient.py:41 src/mpdclient.py:43 src/mpdclient.py:45
+#: src/mpdclient.py:47
+msgid "Admin Commands"
+msgstr ""
+
+#: src/mpdclient.py:42
+msgid "Turn an output off"
+msgstr ""
+
+#: src/mpdclient.py:42 src/mpdclient.py:44
+msgid "<output #>"
+msgstr ""
+
+#: src/mpdclient.py:44
+msgid "Turn an output on"
+msgstr ""
+
+#: src/mpdclient.py:47 src/mpdclient.py:69 src/mpdclient.py:72
+msgid "[<path>]"
+msgstr ""
+
+#: src/mpdclient.py:48
+msgid "Scan path for updates, path defaults to music_directory"
+msgstr ""
+
+#: src/mpdclient.py:50 src/mpdclient.py:52 src/mpdclient.py:54
+#: src/mpdclient.py:56 src/mpdclient.py:58 src/mpdclient.py:60
+#: src/mpdclient.py:62
+msgid "Informational Commands"
+msgstr ""
+
+#: src/mpdclient.py:51
+msgid "Report the current status of mpd"
+msgstr ""
+
+#: src/mpdclient.py:53
+msgid "Display statistics"
+msgstr ""
+
+#: src/mpdclient.py:55
+msgid "Show information about all outputs"
+msgstr ""
+
+#: src/mpdclient.py:57
+msgid "Show which commands you have has access to"
+msgstr ""
+
+#: src/mpdclient.py:59
+msgid "Show which commands you don't have has access to"
+msgstr ""
+
+#: src/mpdclient.py:61
+msgid "Get a list of available song metadata"
+msgstr ""
+
+#: src/mpdclient.py:63
+msgid "Get a list of available URL handlers"
+msgstr ""
+
+#: src/mpdclient.py:65 src/mpdclient.py:67 src/mpdclient.py:69
+#: src/mpdclient.py:71 src/mpdclient.py:74 src/mpdclient.py:77
+#: src/mpdclient.py:79 src/mpdclient.py:81
+msgid "Database Commands"
+msgstr ""
+
+#: src/mpdclient.py:65 src/mpdclient.py:79 src/mpdclient.py:81
+#: src/mpdclient.py:145 src/mpdclient.py:148
+msgid "<type> <query>"
+msgstr ""
+
+#: src/mpdclient.py:66
+msgid "Find songs with a case sensitive, exact match to <query>"
+msgstr ""
+
+#: src/mpdclient.py:68
+msgid "<type> [<type> <query>]"
+msgstr ""
+
+#: src/mpdclient.py:68
+msgid "Show all tags of <type>"
+msgstr ""
+
+#: src/mpdclient.py:70
+msgid "Lists all directories and filenames in <path> recursively"
+msgstr ""
+
+#: src/mpdclient.py:73
+msgid "Lists all information about songs in <path> recursively"
+msgstr ""
+
+#: src/mpdclient.py:75
+msgid "[<directory>]"
+msgstr ""
+
+#: src/mpdclient.py:76
+msgid "List contents of <directory>"
+msgstr ""
+
+#: src/mpdclient.py:78
+msgid "List playlists"
+msgstr ""
+
+#: src/mpdclient.py:78
+msgid "[<prefix>]"
+msgstr ""
+
+#: src/mpdclient.py:80
+msgid "Finds songs with a case insensitive match to <query>"
+msgstr ""
+
+#: src/mpdclient.py:82
+msgid "Retrieve the number of songs and their total playtime matching <query>"
+msgstr ""
+
+#: src/mpdclient.py:84 src/mpdclient.py:86 src/mpdclient.py:89
+#: src/mpdclient.py:91 src/mpdclient.py:93 src/mpdclient.py:95
+#: src/mpdclient.py:97 src/mpdclient.py:100 src/mpdclient.py:102
+#: src/mpdclient.py:105 src/mpdclient.py:108 src/mpdclient.py:109
+#: src/mpdclient.py:111 src/mpdclient.py:113 src/mpdclient.py:116
+#: src/mpdclient.py:119 src/mpdclient.py:121 src/mpdclient.py:123
+#: src/mpdclient.py:126 src/mpdclient.py:129 src/mpdclient.py:131
+#: src/mpdclient.py:133 src/mpdclient.py:135 src/mpdclient.py:137
+#: src/mpdclient.py:139 src/mpdclient.py:141 src/mpdclient.py:144
+#: src/mpdclient.py:147 src/mpdclient.py:169 src/mpdclient.py:172
+#: src/mpdclient.py:175 src/mpdclient.py:177
+msgid "Playlist Commands"
+msgstr ""
+
+#: src/mpdclient.py:84 src/mpdclient.py:100 src/mpdclient.py:119
+#: src/mpdclient.py:121 src/mpdclient.py:132 src/mpdclient.py:134
+#: src/mpdclient.py:138
+msgid "<file>"
+msgstr ""
+
+#: src/mpdclient.py:85
+msgid "Add a song to the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:87
+msgid "<file> [<position>]"
+msgstr ""
+
+#: src/mpdclient.py:88
+msgid "Add a song to the current playlist at position <position>"
+msgstr ""
+
+#: src/mpdclient.py:90
+msgid "Clear the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:92
+msgid "Remove all but the currently playing song"
+msgstr ""
+
+#: src/mpdclient.py:94
+msgid "Display the metadata of the current song"
+msgstr ""
+
+#: src/mpdclient.py:96
+msgid "<position>"
+msgstr ""
+
+#: src/mpdclient.py:96
+msgid "Delete a song from playlist"
+msgstr ""
+
+#: src/mpdclient.py:98
+msgid "<songid #>"
+msgstr ""
+
+#: src/mpdclient.py:99
+msgid "Delete a song from playlist specifying its id"
+msgstr ""
+
+#: src/mpdclient.py:101
+msgid "Load <file> as a playlist"
+msgstr ""
+
+#: src/mpdclient.py:103
+msgid "Rename a playlist"
+msgstr ""
+
+#: src/mpdclient.py:103 src/mpdclient.py:105
+msgid "<from> <to>"
+msgstr ""
+
+#: src/mpdclient.py:106 src/mpdclient.py:108
+msgid "Move song in playlist"
+msgstr ""
+
+#: src/mpdclient.py:108
+msgid "<songid #> <to>"
+msgstr ""
+
+#: src/mpdclient.py:110
+msgid "Display metadata for song in playlist"
+msgstr ""
+
+#: src/mpdclient.py:110 src/mpdclient.py:158
+msgid "[<position>]"
+msgstr ""
+
+#: src/mpdclient.py:112
+msgid "Display meteadata for song in playlist"
+msgstr ""
+
+#: src/mpdclient.py:112 src/mpdclient.py:161
+msgid "[<songid #>]"
+msgstr ""
+
+#: src/mpdclient.py:114 src/mpdclient.py:117
+msgid "<playlist_version>"
+msgstr ""
+
+#: src/mpdclient.py:115 src/mpdclient.py:118
+msgid "Displays changed songs currently in the playlist since <playlist_version>"
+msgstr ""
+
+#: src/mpdclient.py:120
+msgid "Remove playlist"
+msgstr ""
+
+#: src/mpdclient.py:122
+msgid "Save a playlist as <file>"
+msgstr ""
+
+#: src/mpdclient.py:124
+msgid "Shuffle the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:126
+msgid "<position> <position>"
+msgstr ""
+
+#: src/mpdclient.py:127 src/mpdclient.py:130
+msgid "Swap positions of two songs in the playlist"
+msgstr ""
+
+#: src/mpdclient.py:129
+msgid "<songid #> <songid #>"
+msgstr ""
+
+#: src/mpdclient.py:132
+msgid "List files in playlist"
+msgstr ""
+
+#: src/mpdclient.py:134
+msgid "List songs in playlist"
+msgstr ""
+
+#: src/mpdclient.py:136
+msgid "<file> <song path>"
+msgstr ""
+
+#: src/mpdclient.py:136
+msgid "Add song to playlist"
+msgstr ""
+
+#: src/mpdclient.py:138
+msgid "Clear playlist"
+msgstr ""
+
+#: src/mpdclient.py:140
+msgid "<file> <songid #>"
+msgstr ""
+
+#: src/mpdclient.py:140
+msgid "Delete song from playlist"
+msgstr ""
+
+#: src/mpdclient.py:142
+msgid "<file> <songid #> <position>"
+msgstr ""
+
+#: src/mpdclient.py:143
+msgid "Move song to a position in playlist"
+msgstr ""
+
+#: src/mpdclient.py:146
+msgid "Search for songs in the current playlist with strict matching"
+msgstr ""
+
+#: src/mpdclient.py:149
+msgid "Search case-insensitively with partial matches for songs in the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:151 src/mpdclient.py:153 src/mpdclient.py:155
+#: src/mpdclient.py:157 src/mpdclient.py:160 src/mpdclient.py:163
+#: src/mpdclient.py:165 src/mpdclient.py:167
+msgid "Playback Commands"
+msgstr ""
+
+#: src/mpdclient.py:152
+msgid "Set and display crossfade settings"
+msgstr ""
+
+#: src/mpdclient.py:152
+msgid "[<seconds>]"
+msgstr ""
+
+#: src/mpdclient.py:154
+msgid "Play the next song in the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:156
+msgid "Pauses the currently playing song"
+msgstr ""
+
+#: src/mpdclient.py:159
+msgid "Start playing at <position> (default: 1)"
+msgstr ""
+
+#: src/mpdclient.py:162
+msgid "Start playing <songid #> (default: 1)"
+msgstr ""
+
+#: src/mpdclient.py:164
+msgid "Play the previous song in the current playlist"
+msgstr ""
+
+#: src/mpdclient.py:166
+msgid "Toggle random mode, or specify state"
+msgstr ""
+
+#: src/mpdclient.py:168
+msgid "Toggle repeat mode, or specify state"
+msgstr ""
+
+#: src/mpdclient.py:170
+msgid "[+-][HH:MM:SS]|<0-100>% [<song #>]"
+msgstr ""
+
+#: src/mpdclient.py:171
+msgid "Seeks to the specified position in <song #>"
+msgstr ""
+
+#: src/mpdclient.py:173
+msgid "[+-][HH:MM:SS]|<0-100>% [<songid #>]"
+msgstr ""
+
+#: src/mpdclient.py:174
+msgid "Seeks to the specified position in <songid #>"
+msgstr ""
+
+#: src/mpdclient.py:176
+msgid "Stop the currently playing playlists"
+msgstr ""
+
+#: src/mpdclient.py:178
+msgid "[+-]<num>"
+msgstr ""
+
+#: src/mpdclient.py:179
+msgid "Sets volume to <num> or adjusts by [+-]<num>"
+msgstr ""
+
+#: src/mpdclient.py:181
+msgid "Miscellaneous Commands"
+msgstr ""
+
+#: src/mpdclient.py:182
+msgid "Display version of MPD"
+msgstr ""
+
+#: src/mpdclient.py:209
+msgid "Password: "
+msgstr ""
+
+#: src/templates/add.txt:28 src/templates/addid_before.txt:29
+msgid "adding"
+msgstr ""
+
+#: src/templates/addid_after.txt:27 src/templates/currentsong.txt:35
+#: src/templates/plchangesposid.txt:27
+msgid "id"
+msgstr ""
+
+#: src/templates/addid_before.txt:31 src/templates/currentsong.txt:40
+#: src/templates/plchangesposid.txt:28
+msgid "position"
+msgstr ""
+
+#: src/templates/askpass.txt:28
+msgid "Password required for function %(cmd)s."
+msgstr ""
+
+#: src/templates/clear.txt:25
+msgid "Clearing playlist..."
+msgstr ""
+
+#: src/templates/count.txt:29 src/templates/stats.txt:36
+msgid "Songs"
+msgstr ""
+
+#: src/templates/count.txt:30 src/templates/stats.txt:38
+msgid "Play Time"
+msgstr ""
+
+#: src/templates/crop.txt:28
+msgid "Removing all songs..."
+msgstr ""
+
+#: src/templates/crop.txt:30
+msgid "Removing all songs except"
+msgstr ""
+
+#: src/templates/crossfade.txt:31
+msgid "Setting crossfade to %(sec)s seconds..."
+msgstr ""
+
+#: src/templates/crossfade.txt:36
+msgid "crossfade:"
+msgstr ""
+
+#: src/templates/delete.txt:30
+msgid "Deleting song at position: %(pos)s..."
+msgstr ""
+
+#: src/templates/delete.txt:36
+msgid "Deleting songs at positions: %(pos)s..."
+msgstr ""
+
+#: src/templates/deleteid.txt:29
+msgid "Deleting song with id %(id)s..."
+msgstr ""
+
+#: src/templates/disableoutput.txt:28
+msgid "Disabling output with id %(id)s"
+msgstr ""
+
+#: src/templates/enableoutput.txt:28
+msgid "Enabling output with id %(id)s"
+msgstr ""
+
+#: src/templates/kill.txt:26
+msgid "Killing mpd server..."
+msgstr ""
+
+#: src/templates/load.txt:29
+msgid "Loading playlist %(pl)s..."
+msgstr ""
+
+#: src/templates/move.txt:30
+msgid "Moving song from position %(oldpos)s to %(newpos)s..."
+msgstr ""
+
+#: src/templates/moveid.txt:30
+msgid "Moving song with id %(id)s to %(pos)s..."
+msgstr ""
+
+#: src/templates/next.txt:26
+msgid "Switching to the next song in the playlist..."
+msgstr ""
+
+#: src/templates/not_boolean.txt:38
+msgid "\"%s\" is not a boolean value"
+msgstr ""
+
+#: src/templates/outputs.txt:29
+msgid "Output"
+msgstr ""
+
+#: src/templates/outputs.txt:30
+msgid "Name"
+msgstr ""
+
+#: src/templates/outputs.txt:31
+msgid "Status"
+msgstr ""
+
+#: src/templates/outputs.txt:33
+msgid "enabled"
+msgstr ""
+
+#: src/templates/outputs.txt:35
+msgid "disabled"
+msgstr ""
+
+#: src/templates/pause.txt:29 src/templates/play.txt:29
+#: src/templates/playid.txt:29
+msgid "Playing..."
+msgstr ""
+
+#: src/templates/pause.txt:31
+msgid "Pausing..."
+msgstr ""
+
+#: src/templates/pause.txt:33
+msgid "Toggling play/pause..."
+msgstr ""
+
+#: src/templates/play.txt:33
+msgid "Playing song at position %(pos)s..."
+msgstr ""
+
+#: src/templates/playid.txt:33
+msgid "Playing song id with %(id)s..."
+msgstr ""
+
+#: src/templates/playlistadd.txt:30
+msgid "Adding %(path)s to playlist %(pl)s."
+msgstr ""
+
+#: src/templates/playlistclear.txt:29
+msgid "Clearing playlist %(pl)s."
+msgstr ""
+
+#: src/templates/playlistdelete.txt:30
+msgid "Deleting song with id %(id)s from playlist %(pl)s."
+msgstr ""
+
+#: src/templates/playlistmove.txt:31
+msgid "Moving song with id %(id)s in playlist %(pl)s to position %(pos)s."
+msgstr ""
+
+#: src/templates/previous.txt:26
+msgid "Switching to the previous song in the playlist..."
+msgstr ""
+
+#: src/templates/random.txt:28
+msgid "Setting random mode..."
+msgstr ""
+
+#: src/templates/random.txt:30
+msgid "Setting ordered mode..."
+msgstr ""
+
+#: src/templates/rename.txt:30
+msgid "Renaming playlist %(oldpl)s to %(newpl)s..."
+msgstr ""
+
+#: src/templates/repeat.txt:28
+msgid "Setting repeat mode on..."
+msgstr ""
+
+#: src/templates/repeat.txt:30
+msgid "Setting repeat mode off..."
+msgstr ""
+
+#: src/templates/rm.txt:29
+msgid "Removing playlist %(pl)s..."
+msgstr ""
+
+#: src/templates/save.txt:29
+msgid "Saving playlist %(pl)s..."
+msgstr ""
+
+#: src/templates/seek.txt:32
+msgid "Seeking to time %(sec)s in song at position %(pos)s..."
+msgstr ""
+
+#: src/templates/seekid.txt:32
+msgid "Seeking to time %(sec)s in song with id %(id)s..."
+msgstr ""
+
+#: src/templates/setvol.txt:28
+msgid "Setting volume to %(vol)s..."
+msgstr ""
+
+#: src/templates/shuffle.txt:26
+msgid "Shuffling playlist..."
+msgstr ""
+
+#: src/templates/song.txt:39
+msgid "Album"
+msgstr ""
+
+#: src/templates/song.txt:44
+msgid "Genre"
+msgstr ""
+
+#: src/templates/stats.txt:36
+msgid "Albums"
+msgstr ""
+
+#: src/templates/stats.txt:36
+msgid "Artists"
+msgstr ""
+
+#: src/templates/stats.txt:38
+msgid "DB Updated"
+msgstr ""
+
+#: src/templates/stats.txt:38
+msgid "Uptime"
+msgstr ""
+
+#: src/templates/status.txt:29
+msgid "bitrate"
+msgstr ""
+
+#: src/templates/status.txt:29
+msgid "kbps"
+msgstr ""
+
+#: src/templates/status.txt:36
+msgid "Hz"
+msgstr ""
+
+#: src/templates/status.txt:36
+msgid "samplerate"
+msgstr ""
+
+#: src/templates/status.txt:37
+msgid "bit"
+msgstr ""
+
+#: src/templates/status.txt:37
+msgid "bit depth"
+msgstr ""
+
+#: src/templates/status.txt:38
+msgid "channels"
+msgstr ""
+
+#: src/templates/status.txt:44
+msgid "playing"
+msgstr ""
+
+#: src/templates/status.txt:46
+msgid "paused"
+msgstr ""
+
+#: src/templates/status.txt:48
+msgid "stopped"
+msgstr ""
+
+#: src/templates/status.txt:69
+msgid "updating db:"
+msgstr ""
+
+#: src/templates/status.txt:74 src/templates/status.txt:79
+msgid "on"
+msgstr ""
+
+#: src/templates/status.txt:76 src/templates/status.txt:81
+msgid "off"
+msgstr ""
+
+#: src/templates/status.txt:83
+msgid "volume"
+msgstr ""
+
+#: src/templates/status.txt:84
+msgid "xfade"
+msgstr ""
+
+#: src/templates/status.txt:85
+msgid "random"
+msgstr ""
+
+#: src/templates/status.txt:86
+msgid "repeat"
+msgstr ""
+
+#: src/templates/status_aftercmd_permdenied.txt:28
+msgid "Not calling %(cmd)s (%(error)s)"
+msgstr ""
+
+#: src/templates/status_aftercmd_permdenied.txt:29
+msgid "permission denied"
+msgstr ""
+
+#: src/templates/stop.txt:26
+msgid "Stopping..."
+msgstr ""
+
+#: src/templates/swap.txt:30
+msgid "Swapping songs at positions %(pos1)s and %(pos2)s."
+msgstr ""
+
+#: src/templates/swapid.txt:30
+msgid "Swapping songs with ids %(id1)s and %(id2)s."
+msgstr ""
+
+#: src/templates/update.txt:30
+msgid "Updating mpd database, job id: %(id)s"
+msgstr ""
+
+#: src/templates/update.txt:32
+msgid "Updating mpd database, paths: %(path)s, job id %(id)s"
+msgstr ""
+
+#: src/templates/version.txt:27
+msgid "mpd version:"
+msgstr ""
+
+#: src/templates/volume.txt:26
+msgid "volume:"
+msgstr ""
+
+#: src/util.py:58
+msgid "days"
+msgstr ""
+
+#: src/util.py:93
+msgid "'%s' is not a number between 0 and 100"
+msgstr ""
+
+#: src/util.py:106 src/util.py:116
+msgid "'%s' is not two digits"
+msgstr ""
+
+#: src/util.py:127
+msgid "More than two colons in timespec"
+msgstr ""
+
+#: src/util.py:131 src/util.py:133
+msgid "%d is greater than 60"
+msgstr ""
+
+#: src/util.py:141
+msgid "'%s' is not a positive number"
+msgstr ""
+
+#: src/util.py:154
+msgid "Seek amount would seek past the end of the song"
+msgstr ""
+

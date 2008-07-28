@@ -1,0 +1,23 @@
+# vim: set ft=conf :
+# ipythonrc file for mpd console
+
+# Readline configuration
+readline_parse_and_bind tab: complete
+readline_parse_and_bind "\C-l": possible-completions
+readline_parse_and_bind set show-all-if-ambiguous on
+readline_parse_and_bind "\C-o": tab-insert
+readline_parse_and_bind "\M-i": "    "
+readline_parse_and_bind "\M-o": "\d\d\d\d"
+readline_parse_and_bind "\M-I": "\d\d\d\d"
+readline_parse_and_bind "\C-r": reverse-search-history
+readline_parse_and_bind "\C-s": forward-search-history
+readline_parse_and_bind "\C-p": history-search-backward
+readline_parse_and_bind "\C-n": history-search-forward
+readline_parse_and_bind "\e[A": history-search-backward
+readline_parse_and_bind "\e[B": history-search-forward
+readline_parse_and_bind "\C-k": kill-line
+readline_parse_and_bind "\C-u": unix-line-discard
+readline_remove_delims -/~
+readline_merge_completions 1
+readline_omit__names 2
+

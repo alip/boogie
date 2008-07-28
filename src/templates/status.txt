@@ -1,0 +1,86 @@
+##
+## vim: set et sts=4 ts=4 tw=80 ft=mako :
+##
+## Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+##
+## This file is part of Boogie mpd client. Boogie is free software; you can
+## redistribute it and/or modify it under the terms of the GNU General Public
+## License version 2, as published by the Free Software Foundation.
+##
+## Boogie is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+## A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place, Suite 330, Boston, MA  02111-1307  USA
+##
+\
+<%doc>
+    Template for status subcommand.
+</%doc>\
+<%
+    from boogie.colour import bold, cyan, green, magenta, yellow
+%>\
+<%include file="song.txt" />\
+\
+<% nl = False %>\
+%if "bitrate" in status:
+${yellow(_("bitrate"))}: ${green(status["bitrate"] + _("kbps"))}\
+%endif
+\
+%if "audio" in status:
+<%
+    samplerate, bits, channels = status["audio"].split(":")
+%>\
+ ${yellow(_("samplerate"))}: ${green(samplerate + _("Hz"))}\
+ ${yellow(_("bit depth"))}: ${green(bits + _("bit"))}\
+ ${yellow(_("channels"))}: ${green(channels)}
+%elif nl:
+
+%endif
+\
+%if status["state"] == "play":
+[${bold(green(_("playing")))}] \
+%elif status["state"] == "pause":
+[${bold(cyan(_("paused")))}] \
+%elif status["state"] == "stop":
+[${bold(magenta(_("stopped")))}] \
+%endif
+\
+%if "time" in status:
+<%
+    elapsed, total = status["time"].split(":")
+    elapsed = int(elapsed)
+    total = int(total)
+    if elapsed < total:
+        perc = str(int(100.0 * elapsed/total))
+    else:
+        perc = "100"
+%>\
+${green("#" + str(int(status["song"]) + 1) + "/" + status["playlistlength"])} \
+${green("%3d:%.2d/%d:%.2d" % (elapsed/60, elapsed%60, total/60, total%60))} \
+${green("(" + perc + "%)")}
+%else:
+
+%endif
+\
+%if "updating_db" in status:
+${yellow(_("updating db:"))} ${bold("#" + status["updating_db"])}
+%endif
+\
+<%
+    if int(status["random"]):
+        random = _("on")
+    else:
+        random = _("off")
+
+    if int(status["repeat"]):
+        repeat = _("on")
+    else:
+        repeat = _("off")
+%>\
+${yellow(_("volume"))}: ${green(status["volume"] + "%")} \
+${yellow(_("xfade"))}: ${green(status["xfade"] + "s")} \
+${yellow(_("random"))}: ${green(random)} \
+${yellow(_("repeat"))}: ${green(repeat)}

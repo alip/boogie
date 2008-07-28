@@ -1,0 +1,36 @@
+##
+## vim: set et sts=4 ts=4 tw=80 ft=mako :
+##
+## Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+##
+## This file is part of Boogie mpd client. Boogie is free software; you can
+## redistribute it and/or modify it under the terms of the GNU General Public
+## License version 2, as published by the Free Software Foundation.
+##
+## Boogie is distributed in the hope that it will be useful, but WITHOUT ANY
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+## A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place, Suite 330, Boston, MA  02111-1307  USA
+##
+\
+<%doc>
+    Template for update subcommand.
+    paths is the list of directories to update.
+    job is the job id.
+</%doc>\
+<%
+    from boogie.colour import colourify
+    from boogie.colour import bold, green, yellow
+%>\
+\
+%if not paths:
+${colourify(_("Updating mpd database, job id: %(id)s"), yellow, id=bold(job))}
+%else:
+${colourify(_("Updating mpd database, paths: %(path)s, job id %(id)s"), yellow,
+    path=green(str(paths)), id=bold(job)
+    )
+}
+%endif
