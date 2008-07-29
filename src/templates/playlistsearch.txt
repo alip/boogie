@@ -18,10 +18,5 @@
 \
 <%doc>
     Template for playlistsearch subcommand.
-    results is a dictionary containing the song list.
-    Used by subcommands: playlistfind, search
 </%doc>\
-<%
-    from boogie.colour import cyan
-%>\
-<%include file="find.txt" />\
+<%include file="search.txt" />\

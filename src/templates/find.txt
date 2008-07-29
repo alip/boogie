@@ -18,13 +18,15 @@
 \
 <%doc>
     Template for find subcommand.
+    qtype and query are the corresponding command line values.
     results is a dictionary containing the song list.
-    Used by subcommands: playlistfind, playlistsearch, search
+    Used by subcommands: playlistfind
 </%doc>\
 <%
-    from boogie.colour import cyan
+    from boogie.colour import bold, cyan, green, yellow
 %>\
 \
-%for result in results:
-${cyan(result["file"])}
+%for song in results:
+${cyan(song["file"])} - \
+${yellow(song[qtype.lower()]).replace(query, bold(green(query)))}
 %endfor

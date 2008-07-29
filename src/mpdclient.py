@@ -260,18 +260,13 @@ class Mpc(object):
                 "stats" : "stats",
                 "tagtypes" : "tagtypes",
                 "urlhandlers" : "urlhandlers",
-                "find" : "results",
                 "list" : "results",
                 "listall" : "results",
                 "listallinfo" : "results",
                 "listplaylist" : "results",
                 "listplaylistinfo" : "results",
                 "lsinfo" : "results",
-                "search" : "results",
-                "count" : "count",
                 "currentsong" : "song",
-                "playlistfind" : "results",
-                "playlistsearch" : "results",
                 "plchangesposid" : "results",
                 }
         # Commands that return none
@@ -291,6 +286,14 @@ class Mpc(object):
                 "playlistclear",
                 "playlistdelete",
                 "playlistmove",
+                ]
+        # Search commands
+        self._search_commands = [
+                "count",
+                "find",
+                "search",
+                "playlistfind",
+                "playlistsearch",
                 ]
         # Commands that print status after execution.
         self._status_commands = [
@@ -327,6 +330,14 @@ class Mpc(object):
                     printByName(attr, args=args)
                 self.mpc.authenticate(attr)
                 return getattr(self.mpc, attr)(*args)
+            return func
+        elif attr in self._search_commands:
+            def func(qtype, query):
+                self.mpc.authenticate(attr)
+                ret = getattr(self.mpc, attr)(qtype, query)
+                if self.output:
+                    printByName(attr, qtype=qtype, query=query, results=ret)
+                return ret
             return func
         elif attr in self._status_commands:
             def func(*args):

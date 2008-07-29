@@ -18,5 +18,24 @@
 \
 <%doc>
     Template for search subcommand.
+    qtype and query are the corresponding command line values.
+    results is a dictionary containing the song list.
+    Used by subcommands: playlistsearch
 </%doc>\
-<%include file="find.txt" />\
+<%
+    import re
+    from boogie.colour import bold, cyan, green, yellow
+
+    def hquery(s):
+        """Simple function to hilight query respecting colours."""
+        m = re.match("(.*?)" + "(" + re.escape(query) + ")" + "(.*)", s, re.I)
+        if m is not None:
+            head, middle, tail = m.groups()
+            return yellow(head) + bold(green(middle)) + yellow(tail)
+
+%>\
+\
+%for song in results:
+${cyan(song["file"])} - \
+${hquery(song[qtype.lower()])}
+%endfor
