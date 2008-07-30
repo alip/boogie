@@ -262,38 +262,15 @@ class Mpc(object):
                 }
         # Commands that return none
         # Template is rendered before real function is called.
-        self._none_commands = [
-                "deleteid",
-                "kill",
-                "load",
-                "rename",
-                "move",
-                "moveid",
-                "rm",
-                "save",
-                "swap",
-                "swapid",
-                "playlistadd",
-                "playlistclear",
-                "playlistdelete",
-                "playlistmove",
-                ]
+        self._none_commands = ["deleteid", "kill", "load", "rename", "move",
+                "moveid", "rm", "save", "swap", "swapid", "playlistadd",
+                "playlistclear", "playlistdelete", "playlistmove",]
         # Search commands
-        self._search_commands = [
-                "count",
-                "find",
-                "search",
-                "playlistfind",
-                "playlistsearch",
-                ]
+        self._search_commands = ["count", "find", "search", "playlistfind",
+                "playlistsearch",]
         # Commands that print status after execution.
-        self._status_commands = [
-                "clear",
-                "shuffle",
-                "next",
-                "previous",
-                "stop",
-                ]
+        self._status_commands = ["clear", "shuffle", "next", "previous",
+                "stop",]
         # Commands that don't pass any arguments to the mpd function if their
         # argument is None and print status after execution.
         self._status_none_commands = {
