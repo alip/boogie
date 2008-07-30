@@ -218,11 +218,9 @@ class SmartMPDClient(mpd.MPDClient, object):
 class Mpc(object):
     """Main class used by the command line client."""
 
-    def __init__(self, conn=None, askpass=None, output=None, after_status=None):
+    def __init__(self, conn=None, output=None, after_status=None):
         """Initialize class.
         conn is an mpd.MPDClient() instance, if None a new one will be created.
-        if askpass is True and if user doesn't have permission to issue a
-        command ask for the password by getpass.getpass()
         if output is False, no output is printed (used by mpd console)
         if after_status is True, commands like clear, next, previous will call
         status() after execution to print status."""
@@ -230,13 +228,6 @@ class Mpc(object):
             self.mpc = conn
         else:
             self.mpc = SmartMPDClient()
-
-        if askpass is not None:
-            self.askpass = askpass
-        elif config_data.has_option("ui", "askpass"):
-            self.askpass = config_data.getboolean("ui", "askpass")
-        else:
-            self.askpass = True
 
         if after_status is not None:
             self.after_status = after_status
