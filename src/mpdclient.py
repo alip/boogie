@@ -20,7 +20,6 @@
 
 import os
 import sys
-import getpass
 
 import mpd
 
@@ -204,6 +203,7 @@ class SmartMPDClient(mpd.MPDClient, object):
             if config_data.has_option("mpd", "password"):
                 authfunc(config_data.get("mpd", "password"))
             else:
+                import getpass
                 printByName("askpass", command=funcname)
                 authfunc(getpass.getpass(_("Password: ")))
             self.mpd_notcommands = self.__super.__getattr__("notcommands")()
