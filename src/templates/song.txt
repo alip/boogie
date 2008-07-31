@@ -36,12 +36,12 @@ ${cyan(song["file"])}
 \
 <% nl = False %>\
 %if "album" in song:
-${yellow(_("Album"))}: ${magenta(song["album"])}\
+${yellow(_("Album"))}: ${bold(magenta(song["album"]))}\
 <% nl = True %>\
 %endif
 \
 %if "genre" in song:
- ${yellow(_("Genre"))}: ${magenta(song["genre"])}
+ ${yellow(_("Genre"))}: ${bold(magenta(song["genre"]))}
 %elif nl:
 
 %endif
