@@ -21,7 +21,6 @@
 import os
 import sys
 import getpass
-import warnings
 
 import mpd
 
