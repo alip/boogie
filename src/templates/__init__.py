@@ -76,3 +76,7 @@ def printByName(templatename, **kwargs):
     """Render a template using its name and print."""
     sys.stdout.write(renderByName(templatename, **kwargs))
 
+def printError(templatename, **kwargs):
+    """Render a template usıng ıts name and prınt to stderr."""
+    sys.stderr.write(renderByName(templatename, **kwargs))
+

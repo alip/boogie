@@ -24,7 +24,7 @@ import sys
 import mpd
 
 from boogie.config import config_data
-from boogie.templates import printByName
+from boogie.templates import printByName, printError
 from boogie.util import parseTimeSpec, parseTimeStatus
 from boogie.i18n import _
 
@@ -547,16 +547,16 @@ class Mpc(object):
         if "-" in position:
             split_position = position.split("-")
             if len(split_position) != 2:
-                printByName("delete_parse", position=position)
+                printError("delete_parse", position=position)
                 return None
             elif not split_position[0]:
                 # Negative number?
                 try:
                     end = -1 * int(split_position[1])
                 except ValueError:
-                    printByName("delete_parse", position=position)
+                    printError("delete_parse", position=position)
                 else:
-                    printByName("delete_negative", position=[end,])
+                    printError("delete_negative", position=[end,])
                 return None
             else:
                 begin, end = split_position
@@ -565,11 +565,11 @@ class Mpc(object):
                 begin = int(begin) - 1
                 end = int(end) - 1
             except ValueError:
-                printByName("delete_parse", position=position)
+                printError("delete_parse", position=position)
                 return None
 
             if begin < 0 or end < 0:
-                printByName("delete_negative", position=[begin+1, end+1])
+                printError("delete_negative", position=[begin+1, end+1])
                 return None
 
             if begin > end:
@@ -595,7 +595,7 @@ class Mpc(object):
             try:
                 pos = int(position) - 1
             except ValueError:
-                printByName("delete_parse", position=position)
+                printError("delete_parse", position=position)
                 return None
 
         printByName("delete", position=[pos+1,])
@@ -617,8 +617,7 @@ class Mpc(object):
         elif state in BOOLEAN_FALSE:
             new_state = 1
         else:
-            if self.output:
-                printByName("not_boolean", state=state,
+            printError("not_boolean", state=state,
                     boolean_true=BOOLEAN_TRUE, boolean_false=BOOLEAN_FALSE)
             return None
 
@@ -645,8 +644,7 @@ class Mpc(object):
         elif state in BOOLEAN_FALSE:
             new_state = 1
         else:
-            if self.output:
-                printByName("not_boolean", state=state,
+            printError("not_boolean", state=state,
                     boolean_true=BOOLEAN_TRUE, boolean_false=BOOLEAN_FALSE)
             return None
 
