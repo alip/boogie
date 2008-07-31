@@ -545,13 +545,37 @@ class Mpc(object):
         Position can be a range like num-num
         If position is 0, remove the current playing song."""
         if "-" in position:
-            begin, end = position.split("-")[:2]
-            begin = int(begin) - 1
-            end = int(end) - 1
+            split_position = position.split("-")
+            if len(split_position) != 2:
+                printByName("delete_parse", position=position)
+                return None
+            elif not split_position[0]:
+                # Negative number?
+                try:
+                    end = -1 * int(split_position[1])
+                except ValueError:
+                    printByName("delete_parse", position=position)
+                else:
+                    printByName("delete_negative", position=[end,])
+                return None
+            else:
+                begin, end = split_position
+
+            try:
+                begin = int(begin) - 1
+                end = int(end) - 1
+            except ValueError:
+                printByName("delete_parse", position=position)
+                return None
+
+            if begin < 0 or end < 0:
+                printByName("delete_negative", position=[begin+1, end+1])
+                return None
 
             if begin > end:
-                printByName("delete_wrong_order", begin=begin+1, end=end+1)
-                return None
+                begin, end = end, begin
+            elif begin == end:
+                end+=1
 
             printByName("delete", position=range(begin+1, end+1))
 
@@ -568,9 +592,13 @@ class Mpc(object):
             self.mpc.authenticate("currentsong")
             pos = int(self.mpc.currentsong()["pos"])
         else:
-            pos = int(position) - 1
+            try:
+                pos = int(position) - 1
+            except ValueError:
+                printByName("delete_parse", position=position)
+                return None
 
-        printByName("delete", position=[pos+1])
+        printByName("delete", position=[pos+1,])
 
         self.mpc.authenticate("delete")
         return self.mpc.delete(pos)

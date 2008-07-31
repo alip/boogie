@@ -18,16 +18,12 @@
 \
 <%doc>
     Template for delete command.
-    This is used when user specifies a range from high to low.
-    begin is the starting position
-    end is the end position
+    This is used when user specifies a bad position that couldn't be parsed.
+    position is the argument specified by the user.
 </%doc>\
 <%
-    from boogie.colour import colourify
     from boogie.colour import bold, red, cyan
 %>\
 \
-${colourify(_("Range must be from low to high: %(begin)s > %(end)s"),
-    lambda s: bold(red(s)), begin=cyan(str(begin)), end=cyan(str(end))
-    )
-}
+${bold(red(_("Error parsing song numbers from")))} \
+${cyan(position)}
