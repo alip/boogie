@@ -42,7 +42,7 @@ o.nosep = 1
 def exc_handler(cls, etype, value, tb):
     """Exception handler for mpd console."""
     print bold(red(_("error:"))) + " " +\
-            bold(green(etype.__name__ + ":")) + " " + bold(value.message)
+            bold(green(etype.__name__ + ":")) + " " + bold(str(value))
 ip.set_custom_exc((Exception,), exc_handler)
 
 def expose_magic(fn):
@@ -53,7 +53,8 @@ def make_mpd_magic(command_name):
     """Turn an mpd function into a magic function."""
     def magic_func(self, args=''):
         args = args.split()
-        if len(args) not in mpd_command_dict[command_name][0]:
+        if (mpd_command_dict[command_name][0] is not None and
+                len(args) not in mpd_command_dict[command_name][0]):
             raise TypeError, _("%s takes one of %r arguments (%d given)") % (
                     command_name, mpd_command_dict[command_name][0], len(args))
 
