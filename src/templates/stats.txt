@@ -29,7 +29,7 @@
     DB Play Time: 11 days, 19:58:41
 </%doc>\
 <%
-    from time import ctime
+    from time import localtime, strftime
     from boogie.colour import cyan, green, magenta, yellow
     from boogie.util import asHuman, fillSpace
 
@@ -46,5 +46,6 @@ ${yellow(songs)} ${green(stats["songs"])}
 
 ${yellow(playtime)} ${green(asHuman(stats["playtime"]))}
 ${yellow(uptime)} ${green(asHuman(stats["uptime"]))}
-${yellow(db_updated)} ${green(ctime(int(stats["db_update"])))}
+${yellow(db_updated)} \
+${green(strftime("%a %b %d %H:%M:%S %Y", localtime(int(stats["db_update"]))))}
 ${yellow(db_playtime)} ${green(asHuman(stats["db_playtime"]))}

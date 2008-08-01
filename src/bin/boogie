@@ -25,6 +25,9 @@ import re
 import atexit
 import textwrap
 
+import locale
+locale.setlocale(locale.LC_ALL, '')
+
 # Boogie
 import boogie
 from boogie.config import config_data
