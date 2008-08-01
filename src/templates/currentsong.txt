@@ -37,7 +37,7 @@ ${yellow(_("id"))}: ${bold(song["id"])}\
 %endif
 \
 %if "pos" in song:
- ${yellow(_("position"))}: ${bold(green(song["pos"]))}
+ ${yellow(_("position"))}: ${bold(green(str(int(song["pos"]) + 1)))}
 %elif nl:
 
 %endif
