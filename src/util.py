@@ -24,6 +24,10 @@ import re
 
 from boogie.i18n import _
 
+SECSPERMIN = 60
+SECSPERHOUR = 3600
+SECSPERDAY = 86400
+
 class TimeSpecError(Exception):
     pass
 
@@ -36,28 +40,28 @@ def asHuman(seconds, highest=3):
     """
     seconds = int(seconds)
 
-    secs  = str(seconds % 60)
-    if len(secs) == 1:
-        secs = "0" + secs
-    mins  = str(seconds / 60 % 60)
-    if len(mins) == 1:
-        mins = "0" + mins
+    if highest > 3 or highest < 1:
+        raise TypeError("highest must be a number between 1 and 3")
 
-    if highest == 1:
-        return "%s:%s" % (mins, secs)
-
-    hours = str(seconds / 3600 % 60)
-    if len(hours) == 1:
-        hours = "0" + hours
-
-    if highest == 2:
-        return "%s:%s:%s" % (hours, mins, secs)
-
-    days  = str(seconds / 86400 % 7)
     if highest == 3:
-        return days + " " + _("days") + ", " + "%s:%s:%s" %(hours, mins, secs)
+        days = seconds / SECSPERDAY
+        seconds %= SECSPERDAY
+    if highest >= 2:
+        hours = seconds / SECSPERHOUR
+        seconds %= SECSPERHOUR
+    if highest >= 1:
+        minutes = seconds / SECSPERMIN
+        seconds %= SECSPERMIN
     else:
         raise TypeError("highest must be a number between 1 and 3")
+
+    if highest == 1:
+        return "%02d:%02d" % (minutes, seconds)
+    elif highest == 2:
+        return "%d:%02d:%02d" % (hours, minutes, seconds)
+    elif highest == 3:
+        return str(days) + " " + _("days") + ", " + "%d:%02d:%02d" % (hours,
+                                                            minutes, seconds)
 
 def fillSpace(*args):
     """Given a list of strings,

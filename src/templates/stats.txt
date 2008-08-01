@@ -19,13 +19,14 @@
 <%doc>
     Template for stats subcommand.
     Example output:
-    Artists: 284
-    Albums:  410
-    Songs:   2033
+    Artists: 424
+    Albums:  749
+    Songs:   4031
 
-    Play Time:  5 days, 15:19:29
-    Uptime:     0 days, 07:41:59
-    DB Updated: Sat Jul 19 14:31:37 2008
+    Play Time:    2 days, 0:03:38
+    Uptime:       2 days, 3:23:49
+    DB Updated:   Fri Aug  1 13:17:52 2008
+    DB Play Time: 11 days, 19:58:41
 </%doc>\
 <%
     from time import ctime
@@ -34,14 +35,16 @@
 
     artists, albums, songs =\
         fillSpace(_("Artists") + ":", _("Albums") + ":", _("Songs") + ":")
-    playtime, uptime, db_updated =\
-        fillSpace(_("Play Time") + ":", _("Uptime") + ":", _("DB Updated") + ":")
+    playtime, uptime, db_updated, db_playtime =\
+        fillSpace(_("Play Time") + ":", _("Uptime") + ":",
+            _("DB Updated") + ":", _("DB Play Time") + ":")
 %>\
 \
 ${yellow(artists)} ${green(stats["artists"])}
 ${yellow(albums)} ${green(stats["albums"])}
 ${yellow(songs)} ${green(stats["songs"])}
 
-${yellow(playtime)} ${green(asHuman(stats["db_playtime"]))}
+${yellow(playtime)} ${green(asHuman(stats["playtime"]))}
 ${yellow(uptime)} ${green(asHuman(stats["uptime"]))}
 ${yellow(db_updated)} ${green(ctime(int(stats["db_update"])))}
+${yellow(db_playtime)} ${green(asHuman(stats["db_playtime"]))}
