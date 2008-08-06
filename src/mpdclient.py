@@ -172,6 +172,8 @@ mpd_command_dict = {
             _("Seeks to the specified position in <songid #>")),
         "stop":((0,), None, "control", _("Playlist Commands"), "0", "",
             _("Stop the currently playing playlists")),
+        "toggle":((0,), None, "control", _("Playback Commands"), "0", "",
+            _("Toggles Play/Pause, plays if stopped")),
         "volume":((0,1), None, "control", _("Playlist Commands"), "0",
             _("[+-]<num>"),
             _("Sets volume to <num> or adjusts by [+-]<num>")),
@@ -273,7 +275,6 @@ class Mpc(object):
         # Commands that don't pass any arguments to the mpd function if their
         # argument is None and print status after execution.
         self._status_none_commands = {
-                "pause" : "toggle",
                 "play"  : "pos",
                 "playid": "songid",
                 }
@@ -603,6 +604,18 @@ class Mpc(object):
         self.mpc.authenticate("delete")
         return self.mpc.delete(pos)
 
+    def pause(self):
+        if self.output:
+            printByName("pause")
+
+        self.mpc.authenticate("pause")
+        ret = self.mpc.pause(1)
+
+        if self.after_status:
+            self.status(after_command=True)
+
+        return ret
+
     def random(self, state=None):
         if state is None:
             # Toggle random mode
@@ -655,6 +668,26 @@ class Mpc(object):
 
         if self.after_status:
             self.status()
+        return ret
+
+    def toggle(self):
+        self.mpc.authenticate("status")
+        state = self.mpc.status()["state"]
+
+        printByName("toggle", state=state)
+        if state == "play":
+            self.mpc.authenticate("pause")
+            ret = self.mpc.pause(1)
+        elif state == "pause":
+            self.mpc.authenticate("pause")
+            ret = self.mpc.pause(0)
+        else:
+            self.mpc.authenticate("play")
+            ret = self.mpc.play()
+
+        if self.after_status:
+            self.status(after_command=True)
+
         return ret
 
     def seek(self, timespec, position=None):

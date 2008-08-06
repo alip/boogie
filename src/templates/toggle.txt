@@ -17,11 +17,15 @@
 ##
 \
 <%doc>
-    Template for pause subcommand.
-    Called before mpd.pause() function is called.
+    Template for toggle subcommand.
+    state is the current state.
 </%doc>\
 <%
     from boogie.colour import yellow
 %>\
 \
+%if state == "play":
 ${yellow(_("Pausing..."))}
+%elif state in ("pause", "stop"):
+${yellow(_("Playing..."))}
+%endif
