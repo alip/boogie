@@ -41,6 +41,8 @@ setup(name = boogie.__name__,
             "Topic :: Multimedia :: Sound/Audio",
             ],
         keywords = ["mpd", "mpc", "music console",],
-        requires = ["ipython", "mako", "python-mpd"],
+        # python-mpd doesn't fit the name convention of distutils?!!
+        # requires = ["ipython", "mako", "python-mpd" ],
+        requires = ["ipython", "mako"],
     )
 
