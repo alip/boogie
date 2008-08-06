@@ -41,6 +41,6 @@ setup(name = boogie.__name__,
             "Topic :: Multimedia :: Sound/Audio",
             ],
         keywords = ["mpd", "mpc", "music console",],
-        requires = ["ipython", "mako"],
+        requires = ["ipython", "mako", "python-mpd"],
     )
 
