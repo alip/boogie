@@ -130,8 +130,8 @@ def main():
         subcommand = config_data.get("alias", subcommand)
 
     if not subcommand in mpd_commands:
-        print >>sys.stderr, _("unknown command '%s'") % subcommand
-        usage()
+        print >>sys.stderr, boogie.__name__ + ": " +\
+            _("'%s' is not a boogie command. See 'boogie help'.") % subcommand
         sys.exit(1)
     elif (mpd_command_dict[subcommand][0] is not None and
             len(arguments) not in mpd_command_dict[subcommand][0]):
