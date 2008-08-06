@@ -191,6 +191,7 @@ class SmartMPDClient(mpd.MPDClient, object):
 
     def __init__(self):
         self.__super.__init__()
+        self.in_commandlist = False
         self.mpd_notcommands = []
 
     def connect(self, host, port):
@@ -213,8 +214,20 @@ class SmartMPDClient(mpd.MPDClient, object):
     def __getattr__(self, attr):
         if attr == "notcommands":
             return lambda *args: self.mpd_notcommands
-        else:
-            return self.__super.__getattr__(attr)
+
+        if attr == "command_list_ok_begin":
+            self.in_commandlist = True
+            return self.__super.__getattr("command_list_ok_begin")
+        elif attr == "command_list_end":
+            self.in_commandlist = False
+            return self.__super.__getattr__("command_list_end")
+
+        # Don't try to authenticate when in a command list because that'll
+        # change the return value of command_list_end()
+        if not self.in_commandlist:
+            self.authenticate(attr)
+
+        return self.__super.__getattr__(attr)
 
 class Mpc(object):
     """Main class used by the command line client."""
@@ -282,7 +295,6 @@ class Mpc(object):
     def __getattr__(self, attr):
         if attr in self._common_commands:
             def func(*args):
-                self.mpc.authenticate(attr)
                 if args:
                     ret = getattr(self.mpc, attr)(*args)
                 else:
@@ -296,12 +308,10 @@ class Mpc(object):
             def func(*args):
                 if self.output:
                     printByName(attr, args=args)
-                self.mpc.authenticate(attr)
                 return getattr(self.mpc, attr)(*args)
             return func
         elif attr in self._search_commands:
             def func(qtype, query):
-                self.mpc.authenticate(attr)
                 ret = getattr(self.mpc, attr)(qtype, query)
                 if self.output:
                     printByName(attr, qtype=qtype, query=query, results=ret)
@@ -312,12 +322,10 @@ class Mpc(object):
                 if args:
                     if self.output:
                         printByName(attr, args=args)
-                    self.mpc.authenticate(attr)
                     ret = getattr(self.mpc, attr)(*args)
                 else:
                     if self.output:
                         printByName(attr)
-                    self.mpc.authenticate(attr)
                     ret = getattr(self.mpc, attr)()
 
                 if self.after_status:
@@ -330,7 +338,6 @@ class Mpc(object):
                 kwargs = { self._status_none_commands[attr] : arg }
                 if self.output:
                     printByName(attr, **kwargs)
-                self.mpc.authenticate(attr)
                 if arg is None:
                     ret = getattr(self.mpc, attr)()
                 else:
@@ -372,18 +379,15 @@ class Mpc(object):
     def disableoutput(self, outputid):
         if self.output:
             printByName("disableoutput", outputid=outputid)
-        self.mpc.authenticate("disableoutput")
         ret = self.mpc.disableoutput(outputid)
 
         if self.after_status:
-            self.mpc.authenticate("outputs")
             self.outputs()
         return ret
 
     def enableoutput(self, outputid):
         if self.output:
             printByName("enableoutput", outputid=outputid)
-        self.mpc.authenticate("enableoutput")
         ret = self.mpc.enableoutput(outputid)
 
         if self.after_status:
@@ -391,10 +395,10 @@ class Mpc(object):
         return ret
 
     def update(self, *paths):
-        self.mpc.authenticate("update")
         if not paths:
             ret = self.mpc.update()
         else:
+            self.mpc.authenticate("update")
             self.mpc.command_list_ok_begin()
             for path in paths:
                 self.mpc.update(path)
@@ -407,7 +411,6 @@ class Mpc(object):
         return ret
 
     def playlistid(self, songid=None):
-        self.mpc.authenticate("playlistid")
         if songid is None:
             ret = self.mpc.playlistid()
         else:
@@ -420,7 +423,6 @@ class Mpc(object):
         return ret
 
     def playlist(self, song=None):
-        self.mpc.authenticate("playlistinfo")
         if song is None:
             ret = self.mpc.playlistinfo()
         else:
@@ -433,7 +435,6 @@ class Mpc(object):
         return ret
 
     def plchanges(self, version):
-        self.mpc.authenticate("plchanges")
         ret = self.mpc.plchanges(version)
 
         if self.output:
@@ -443,7 +444,6 @@ class Mpc(object):
         return ret
 
     def lsplaylists(self, prefix=None):
-        self.mpc.authenticate("lsinfo")
         ret = self.mpc.lsinfo()
         playlists = []
         for value in ret:
@@ -457,7 +457,6 @@ class Mpc(object):
         return playlists
 
     def status(self, after_command=False):
-        self.mpc.authenticate("status")
         ret = self.mpc.status()
 
         if "songid" in ret:
@@ -497,7 +496,6 @@ class Mpc(object):
         if self.output:
             printByName("addid_before", args=(path, position))
 
-        self.mpc.authenticate("addid")
         if position is None:
             ret = self.mpc.addid(path)
         else:
@@ -527,14 +525,12 @@ class Mpc(object):
 
     def crossfade(self, seconds=None):
         if seconds is None:
-            self.mpc.authenticate("status")
             current_fade = self.mpc.status()["xfade"]
             if self.output:
                 printByName("crossfade", seconds=None, current=current_fade)
         else:
             if self.output:
                 printByName("crossfade", seconds=seconds, current=None)
-            self.mpc.authenticate("crossfade")
             ret = self.mpc.crossfade(seconds)
 
             if self.after_status:
@@ -580,7 +576,6 @@ class Mpc(object):
 
             printByName("delete", position=range(begin+1, end+1))
 
-            self.mpc.authenticate("delete")
             self.mpc.command_list_ok_begin()
             diff = 0
             for pos in range(begin, end):
@@ -590,7 +585,6 @@ class Mpc(object):
 
         if position == "0":
             # Remove current song
-            self.mpc.authenticate("currentsong")
             pos = int(self.mpc.currentsong()["pos"])
         else:
             try:
@@ -601,14 +595,12 @@ class Mpc(object):
 
         printByName("delete", position=[pos+1,])
 
-        self.mpc.authenticate("delete")
         return self.mpc.delete(pos)
 
     def pause(self):
         if self.output:
             printByName("pause")
 
-        self.mpc.authenticate("pause")
         ret = self.mpc.pause(1)
 
         if self.after_status:
@@ -619,7 +611,6 @@ class Mpc(object):
     def random(self, state=None):
         if state is None:
             # Toggle random mode
-            self.mpc.authenticate("status")
             current_state = self.mpc.status()["random"]
             if current_state == "0":
                 new_state = 1
@@ -636,7 +627,6 @@ class Mpc(object):
 
         if self.output:
             printByName("random", state=new_state)
-        self.mpc.authenticate("random")
         ret = self.mpc.random(new_state)
 
         if self.after_status:
@@ -646,7 +636,6 @@ class Mpc(object):
     def repeat(self, state=None):
         if state is None:
             # Toggle random mode
-            self.mpc.authenticate("status")
             current_state = self.mpc.status()["repeat"]
             if current_state == "0":
                 new_state = 1
@@ -663,7 +652,6 @@ class Mpc(object):
 
         if self.output:
             printByName("repeat", state=new_state)
-        self.mpc.authenticate("repeat")
         ret = self.mpc.repeat(new_state)
 
         if self.after_status:
@@ -671,18 +659,14 @@ class Mpc(object):
         return ret
 
     def toggle(self):
-        self.mpc.authenticate("status")
         state = self.mpc.status()["state"]
 
         printByName("toggle", state=state)
         if state == "play":
-            self.mpc.authenticate("pause")
             ret = self.mpc.pause(1)
         elif state == "pause":
-            self.mpc.authenticate("pause")
             ret = self.mpc.pause(0)
         else:
-            self.mpc.authenticate("play")
             ret = self.mpc.play()
 
         if self.after_status:
@@ -691,7 +675,6 @@ class Mpc(object):
         return ret
 
     def seek(self, timespec, position=None):
-        self.mpc.authenticate("status")
         status = self.mpc.status()
 
         if position is None:
@@ -711,7 +694,6 @@ class Mpc(object):
 
         if self.output:
             printByName("seek", position=position, seekto=seekto)
-        self.mpc.authenticate("seek")
         ret = self.mpc.seek(position, seekto)
         if self.after_status:
             self.status(after_command=True)
@@ -719,7 +701,6 @@ class Mpc(object):
         return ret
 
     def seekid(self, timespec, songid=None):
-        self.mpc.authenticate("status")
         status = self.mpc.status()
 
         if songid is None:
@@ -738,7 +719,6 @@ class Mpc(object):
         seekto = parseTimeSpec(timespec, elapsedtime, totaltime)
 
         if self.output: printByName("seekid", songid=songid, seekto=seekto)
-        self.mpc.authenticate("seekid")
         ret = self.mpc.seekid(songid, seekto)
         if self.after_status:
             self.status(after_command=True)
@@ -751,7 +731,6 @@ class Mpc(object):
         elif volumespec.startswith("-"): relative = -1
 
         if relative:
-            self.mpc.authenticate("status")
             status = self.mpc.status()
 
             volumechange = int(volumespec[1:])
@@ -760,7 +739,6 @@ class Mpc(object):
             volume = int(volumespec)
             if self.output:
                 printByName("setvol", volume=volume)
-            self.mpc.authenticate("setvol")
             ret = self.mpc.setvol(volume)
 
             if self.after_status:
@@ -774,7 +752,6 @@ class Mpc(object):
 
         if self.output:
             printByName("setvol", volume=newvolume)
-        self.mpc.authenticate("setvol")
         ret = self.mpc.setvol(newvolume)
 
         if self.after_status:
@@ -783,7 +760,6 @@ class Mpc(object):
 
     def volume(self, volumespec=None):
         if volumespec is None:
-            self.mpc.authenticate("status")
             status = self.mpc.status()
             volume = status["volume"]
             if self.output:
