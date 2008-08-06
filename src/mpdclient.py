@@ -423,7 +423,7 @@ class Mpc(object):
         if song is None:
             ret = self.mpc.playlistinfo()
         else:
-            ret = self.mpc.playlistinfo(song-1)
+            ret = self.mpc.playlistinfo(song)
 
         if self.output:
             currentsong = self.mpc.currentsong()
