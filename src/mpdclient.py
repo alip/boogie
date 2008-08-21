@@ -468,16 +468,13 @@ class Mpc(object):
         return self.mpc.command_list_end()
 
     def addid(self, path, position=None):
-        if self.output:
-            printByName("addid_before", args=(path, position))
-
         if position is None:
             ret = self.mpc.addid(path)
         else:
             ret = self.mpc.addid(path, position)
 
         if self.output:
-            printByName("addid_after", playlistid=ret)
+            printByName("addid", playlistid=ret)
         return ret
 
     def crop(self):
