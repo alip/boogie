@@ -283,14 +283,8 @@ class Mpc(object):
         self._search_commands = ["count", "find", "search", "playlistfind",
                 "playlistsearch",]
         # Commands that print status after execution.
-        self._status_commands = ["clear", "shuffle", "next", "previous",
-                "stop",]
-        # Commands that don't pass any arguments to the mpd function if their
-        # argument is None and print status after execution.
-        self._status_none_commands = {
-                "play"  : "pos",
-                "playid": "songid",
-                }
+        self._status_commands = ["clear", "shuffle", "next", "play", "playid",
+                "previous", "stop",]
 
     def __getattr__(self, attr):
         if attr in self._common_commands:
@@ -320,31 +314,13 @@ class Mpc(object):
         elif attr in self._status_commands:
             def func(*args):
                 if args:
-                    if self.output:
-                        printByName(attr, args=args)
                     ret = getattr(self.mpc, attr)(*args)
                 else:
-                    if self.output:
-                        printByName(attr)
                     ret = getattr(self.mpc, attr)()
 
                 if self.after_status:
                     self.status(after_command=True)
 
-                return ret
-            return func
-        elif attr in self._status_none_commands:
-            def func(arg=None):
-                kwargs = { self._status_none_commands[attr] : arg }
-                if self.output:
-                    printByName(attr, **kwargs)
-                if arg is None:
-                    ret = getattr(self.mpc, attr)()
-                else:
-                    ret = getattr(self.mpc, attr)(arg)
-
-                if self.after_status:
-                    self.status(after_command=True)
                 return ret
             return func
         else:
