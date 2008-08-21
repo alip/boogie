@@ -67,7 +67,7 @@ def make_mpd_magic(command_name):
                     args[index] = typ[index](args[index])
                 except ValueError:
                     raise ValueError, _("%r is not %s") % (args[index], typ)
-            index += 1
+                index += 1
 
         if args:
             self.api.ex("_ret = getattr(_mpc, '%s')(*%r)" % (command_name, args))
