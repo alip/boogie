@@ -459,13 +459,12 @@ class Mpc(object):
                     line = line[:-1]
                 paths.append(line)
 
-        if self.output:
-            printByName("add", paths=paths)
-
         self.mpc.authenticate("add")
         self.mpc.command_list_ok_begin()
         for path in paths:
             self.mpc.add(path)
+            if self.output:
+                printByName("add", path=path)
         return self.mpc.command_list_end()
 
     def addid(self, path, position=None):

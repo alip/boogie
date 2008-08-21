@@ -18,12 +18,10 @@
 \
 <%doc>
     Template for add subcommand.
-    paths is a list of path names.
+    path is the path that will be added.
 </%doc>\
 <%
     from boogie.colour import cyan, yellow
 %>\
 \
-%for path in paths:
 ${yellow(_("adding"))}: ${cyan(path)}
-%endfor
