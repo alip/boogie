@@ -570,9 +570,6 @@ class Mpc(object):
         return self.mpc.delete(pos)
 
     def pause(self):
-        if self.output:
-            printByName("pause")
-
         ret = self.mpc.pause(1)
 
         if self.after_status:
@@ -633,7 +630,6 @@ class Mpc(object):
     def toggle(self):
         state = self.mpc.status()["state"]
 
-        printByName("toggle", state=state)
         if state == "play":
             ret = self.mpc.pause(1)
         elif state == "pause":
