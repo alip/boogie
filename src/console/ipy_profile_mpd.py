@@ -133,3 +133,22 @@ _connected = False""")
 for command in mpd_command_dict:
     make_mpd_magic(command)
 
+# Completion
+def set_completer(command, completer_func):
+    """Set completion for a command and its aliases."""
+    ip.set_hook("complete_command", completer_func, str_key = command)
+    # Aliases
+    if config_data.has_section("alias"):
+        for alias, mycommand in config_data.items("alias"):
+            if command == mycommand:
+                ip.set_hook("complete_command", completer_func, str_key = alias)
+
+from boogie.console.completers import music_all_completer, music_dir_completer
+
+set_completer("add", music_all_completer)
+set_completer("addid", music_all_completer)
+set_completer("listall", music_all_completer)
+set_completer("listallinfo", music_all_completer)
+set_completer("lsinfo", music_dir_completer)
+set_completer("update", music_all_completer)
+
