@@ -34,7 +34,7 @@ class configParser(ConfigParser.SafeConfigParser):
         return ConfigParser.ConfigParser.set(self, section, option, value)
 
     def _interpolate(self, section, option, rawval, vars):
-        if not isinstance(rawval, basestring):
+        if not isinstance(rawval, str):
             return rawval
         return ConfigParser.SafeConfigParser._interpolate(self, section,
                                                           option, rawval, vars)
