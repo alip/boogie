@@ -171,7 +171,7 @@ mpd_command_dict = {
             _("[+-][HH:MM:SS]|<0-100>% [<songid #>]"),
             _("Seeks to the specified position in <songid #>")),
         "stop":((0,), None, "control", _("Playlist Commands"), "0", "",
-            _("Stop the currently playing playlists")),
+            _("Stop the currently playing playlist")),
         "toggle":((0,), None, "control", _("Playback Commands"), "0", "",
             _("Toggles Play/Pause, plays if stopped")),
         "volume":((0,1), None, "control", _("Playlist Commands"), "0",
