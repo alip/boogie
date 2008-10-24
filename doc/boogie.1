@@ -1,0 +1,694 @@
+.\"     Title: boogie
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.74.0 <http://docbook.sf.net/>
+.\"      Date: 10/24/2008
+.\"    Manual: Boogie Manual
+.\"    Source: Boogie 0.01
+.\"  Language: English
+.\"
+.TH "BOOGIE" "1" "10/24/2008" "Boogie 0\&.01" "Boogie Manual"
+.\" -----------------------------------------------------------------
+.\" * (re)Define some macros
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" toupper - uppercase a string (locale-aware)
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de toupper
+.tr aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ
+\\$*
+.tr aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz
+..
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" SH-xref - format a cross-reference to an SH section
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de SH-xref
+.ie n \{\
+.\}
+.toupper \\$*
+.el \{\
+\\$*
+.\}
+..
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" SH - level-one heading that works better for non-TTY output
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de1 SH
+.\" put an extra blank line of space above the head in non-TTY output
+.if t \{\
+.sp 1
+.\}
+.sp \\n[PD]u
+.nr an-level 1
+.set-an-margin
+.nr an-prevailing-indent \\n[IN]
+.fi
+.in \\n[an-margin]u
+.ti 0
+.HTML-TAG ".NH \\n[an-level]"
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+\." make the size of the head bigger
+.ps +3
+.ft B
+.ne (2v + 1u)
+.ie n \{\
+.\" if n (TTY output), use uppercase
+.toupper \\$*
+.\}
+.el \{\
+.nr an-break-flag 0
+.\" if not n (not TTY), use normal case (not uppercase)
+\\$1
+.in \\n[an-margin]u
+.ti 0
+.\" if not n (not TTY), put a border/line under subheading
+.sp -.6
+\l'\n(.lu'
+.\}
+..
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" SS - level-two heading that works better for non-TTY output
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de1 SS
+.sp \\n[PD]u
+.nr an-level 1
+.set-an-margin
+.nr an-prevailing-indent \\n[IN]
+.fi
+.in \\n[IN]u
+.ti \\n[SN]u
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.ps \\n[PS-SS]u
+\." make the size of the head bigger
+.ps +2
+.ft B
+.ne (2v + 1u)
+.if \\n[.$] \&\\$*
+..
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" BB/BE - put background/screen (filled box) around block of text
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de BB
+.if t \{\
+.sp -.5
+.br
+.in +2n
+.ll -2n
+.gcolor red
+.di BX
+.\}
+..
+.de EB
+.if t \{\
+.if "\\$2"adjust-for-leading-newline" \{\
+.sp -1
+.\}
+.br
+.di
+.in
+.ll
+.gcolor
+.nr BW \\n(.lu-\\n(.i
+.nr BH \\n(dn+.5v
+.ne \\n(BHu+.5v
+.ie "\\$2"adjust-for-leading-newline" \{\
+\M[\\$1]\h'1n'\v'+.5v'\D'P \\n(BWu 0 0 \\n(BHu -\\n(BWu 0 0 -\\n(BHu'\M[]
+.\}
+.el \{\
+\M[\\$1]\h'1n'\v'-.5v'\D'P \\n(BWu 0 0 \\n(BHu -\\n(BWu 0 0 -\\n(BHu'\M[]
+.\}
+.in 0
+.sp -.5v
+.nf
+.BX
+.in
+.sp .5v
+.fi
+.\}
+..
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" BM/EM - put colored marker in margin next to block of text
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.de BM
+.if t \{\
+.br
+.ll -2n
+.gcolor red
+.di BX
+.\}
+..
+.de EM
+.if t \{\
+.br
+.di
+.ll
+.gcolor
+.nr BH \\n(dn
+.ne \\n(BHu
+\M[\\$1]\D'P -.75n 0 0 \\n(BHu -(\\n[.i]u - \\n(INu - .75n) 0 0 -\\n(BHu'\M[]
+.in 0
+.nf
+.BX
+.in
+.fi
+.\}
+..
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "Name"
+boogie \- Program for controlling Music Player Daemon (MPD)
+.SH "Synopsis"
+.sp
+\fBboogie\fR [\fI\-ns\fR] [\fIcommand\fR] [\fIcommand args\fR]\&...
+.SH "DESCRIPTION"
+.sp
+boogie is a client for MPD, the Music Player Daemon\&. boogie connects to a MPD and controls it according to commands and arguments passed to it\&. If no arguments are passed, current status is given\&. In addition to these, boogie has a console mode to interactively control MPD\&.
+.SH "OPTIONS"
+.PP
+\fB\-ns, \-\-no\-status\fR
+.RS 4
+Prevents the current song status from being printed on completion of some of the commands\&.
+.RE
+.SH "COMMANDS"
+.SS "Boogie Commands"
+.PP
+\fBhelp\fR
+.RS 4
+Display help and exit\&.
+.RE
+.PP
+\fBconsole\fR
+.RS 4
+Launch mpd shell\&.
+.RE
+.SS "MPD Commands"
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBAdmin Commands\fR
+.RS 4
+.PP
+\fBdisableoutput <output #>\fR
+.RS 4
+Turns an output off, output number is required\&.
+.RE
+.PP
+\fBenableoutput <output #>\fR
+.RS 4
+Turns an output on, output number is required\&.
+.RE
+.PP
+\fBkill\fR
+.RS 4
+Stop MPD from running, in a safe way\&.
+.RE
+.PP
+\fBupdate [<path>\&...]\fR
+.RS 4
+Scan path for updates\&. path defaults to the root MPD\'s music_directory\&. After initiating an update, the update is assigned an update job id and is displayed in status, each update incrementing the update job id by 1\&. Using more than one path argument is more efficient than running this command more than once since the former uses command list\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBInformational Commands\fR
+.RS 4
+.PP
+\fBcommands\fR
+.RS 4
+Show a list of commands the current user has access to\&.
+.RE
+.PP
+\fBnotcommands\fR
+.RS 4
+Show a list of commands the current user does
+\fBnot\fR
+have access to\&.
+.RE
+.PP
+\fBoutputs\fR
+.RS 4
+Show information about all outputs\&.
+.RE
+.PP
+\fBstats\fR
+.RS 4
+Display statistics about MPD\&.
+.RE
+.PP
+\fBstatus\fR
+.RS 4
+Report the current status of MPD\&.
+.RE
+.PP
+\fBtagtypes\fR
+.RS 4
+Get a list of available song metadata\&.
+.RE
+.PP
+\fBurlhandlers\fR
+.RS 4
+Get a list of available URL handlers\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBDatabase Commands\fR
+.RS 4
+.PP
+\fBcount <type> <query>\fR
+.RS 4
+Retrieve the number of songs and their total playtime in the database matching <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.PP
+\fBfind <type> <query>\fR
+.RS 4
+Finds songs in the database with a case sensitive, exact match to <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.PP
+\fBlist <type> [<type> <query>]\fR
+.RS 4
+List all metadata of <type>, optionally limit the list by <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.PP
+\fBlistall [<path>]\fR
+.RS 4
+Lists all directories and filenames in <path> recursively\&.
+.RE
+.PP
+\fBlistallinfo [<path>]\fR
+.RS 4
+Lists all information in database about all music files in <path> recursively\&.
+.RE
+.PP
+\fBlsinfo [<directory>]\fR
+.RS 4
+List contents of <directory>, from the database\&.
+.RE
+.PP
+\fBlsplaylists [<prefix>]\fR
+.RS 4
+List playlists starting with prefix\&.
+.RE
+.PP
+\fBsearch <type> <query>\fR
+.RS 4
+Finds songs in the database with a case insensitive match to <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBPlaylist Commands\fR
+.RS 4
+.PP
+\fBadd <file>\fR
+.RS 4
+Add a single file from the database to the playlist\&. This command increments the playlist version by 1 for each song added to the playlist\&.
+.RE
+.PP
+\fBaddid <file> [<position>]\fR
+.RS 4
+Like add but returns a playlist id\&. Optional position argument allows the inserting of <file> at that given position\&.
+.RE
+.PP
+\fBclear\fR
+.RS 4
+Clears the current playlist, increment the playlist version by 1\&.
+.RE
+.PP
+\fBcrop\fR
+.RS 4
+Remove all but the currently playing song\&.
+.RE
+.PP
+\fBcurrentsong\fR
+.RS 4
+Displays the metadata of the current song\&.
+.RE
+.PP
+\fBdelete <position>\fR
+.RS 4
+Delete the song at position from the playlist, increment the playlist version by 1\&.
+.RE
+.PP
+\fBdeleteid <songid #>\fR
+.RS 4
+Delete song with the given id from playlist, increment the playlist version by 1\&.
+.RE
+.PP
+\fBlistplaylist <file>\fR
+.RS 4
+List files in playlist\&.
+.RE
+.PP
+\fBlistplaylistinfo <file>\fR
+.RS 4
+List songs in playlist\&.
+.RE
+.PP
+\fBload <file>\fR
+.RS 4
+Load the given playlist from the playlist directory, increment the playlist version by the number of songs added\&.
+.RE
+.PP
+\fBmove <from> <to>\fR
+.RS 4
+Move song at <from> to <to> in the playlist, increment the playlist version by 1\&.
+.RE
+.PP
+\fBmoveid <songid #> <to>\fR
+.RS 4
+Move song with id <songid> to <to> in the playlist, increment the playlist version by 1\&.
+.RE
+.PP
+\fBplaylist [<position>]\fR
+.RS 4
+Display metadata for songs in the playlist\&.
+.RE
+.PP
+\fBplaylistadd <file> <song path>\fR
+.RS 4
+Add <song path> to playlist <file>\&.
+.RE
+.PP
+\fBplaylistclear <file>\fR
+.RS 4
+Clear playlist <file>\&.
+.RE
+.PP
+\fBplaylistdelete <file> <songid #>\fR
+.RS 4
+Delete song with id <songid> from playlist <file>\&.
+.RE
+.PP
+\fBplaylistfind <type> <query>\fR
+.RS 4
+Finds songs in the playlist with a case sensitive, exact match to <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.PP
+\fBplaylistid <songid #>\fR
+.RS 4
+Display metadata for songs in the playlist\&.
+.RE
+.PP
+\fBplaylistmove <file> <songid #> <position>\fR
+.RS 4
+Move song with id <songid> to <position> in playlist <file>\&.
+.RE
+.PP
+\fBplaylistsearch <type> <query>\fR
+.RS 4
+Finds songs in the playlist with a case insensitive match to <query>\&. See SCOPE SPECIFIERS for more information about <type>\&.
+.RE
+.PP
+\fBplchanges <playlist_version>\fR
+.RS 4
+Displays changed songs currently in the playlist since <playlist_version>\&.
+.RE
+.PP
+\fBplchangesposid <playlist_version>\fR
+.RS 4
+Displays changed songs currently in the playlist since <playlist_version>, but only return the position and the id\&.
+.RE
+.PP
+\fBrename <from> <to>\fR
+.RS 4
+Rename playlist <from> to <to>\&.
+.RE
+.PP
+\fBrm <file>\fR
+.RS 4
+Remove playlist\&.
+.RE
+.PP
+\fBsave <file>\fR
+.RS 4
+Saves the current playlist to <file> in the playlist directory\&.
+.RE
+.PP
+\fBseek [+\-][HH:MM:SS]|<0\-100>% [<song #>]\fR
+.RS 4
+Seeks to the specified position in <song #>\&.
+.RE
+.PP
+\fBseekid [+\-][HH:MM:SS]|<0\-100>% [<songid #>]\fR
+.RS 4
+Seeks to the specified position in <songid #>\&.
+.RE
+.PP
+\fBshuffle\fR
+.RS 4
+Shuffles the current playlist, increments playlist version by 1\&.
+.RE
+.PP
+\fBstop\fR
+.RS 4
+Stops the currently playing playlist\&.
+.RE
+.PP
+\fBswap <position> <position>\fR
+.RS 4
+Swaps given positions, increments playlist version by 1\&.
+.RE
+.PP
+\fBswapid <songid > <songid >\fR
+.RS 4
+Swaps positions of songs by song id\'s, increments playlist version by 1\&.
+.RE
+.PP
+\fBvolume [+\-]<num>\fR
+.RS 4
+Sets volume to <num> or adjusts by [+\-]<num>\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBPlayback Commands\fR
+.RS 4
+.PP
+\fBcrossfade [<seconds>]\fR
+.RS 4
+Sets or displays crossfade settings\&.
+.RE
+.PP
+\fBnext\fR
+.RS 4
+Plays the next song in the current playlist\&.
+.RE
+.PP
+\fBpause\fR
+.RS 4
+Pauses the currently playing song\&.
+.RE
+.PP
+\fBplay [<position>]\fR
+.RS 4
+Starts playing at <position> (default: 1)
+.RE
+.PP
+\fBplayid [<songid #>]\fR
+.RS 4
+Starts playing <songid #> (default: 1)
+.RE
+.PP
+\fBprevious\fR
+.RS 4
+Plays the previous song in the current playlist\&.
+.RE
+.PP
+\fBrandom <on|off>\fR
+.RS 4
+Toggle random mode, or specify state\&.
+.RE
+.PP
+\fBrepeat <on|off>\fR
+.RS 4
+Toggle repeat mode, or specify state\&.
+.RE
+.PP
+\fBtoggle\fR
+.RS 4
+Toggles Play/Pause, plays if stopped\&.
+.RE
+.RE
+.sp
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBMiscellaneous Commands\fR
+.RS 4
+.PP
+\fBversion\fR
+.RS 4
+Displays version of MPD\&.
+.RE
+.RE
+.SH "SCOPE SPECIFIERS"
+.sp
+Commands such as find, list and search require arguments that modify the scope of their actions\&. Most of the MPD "scope specifiers" are derived from the ID3 Tags used in MP3 files (see http://www\&.id3\&.org/)\&. As of this writing, MPD groks the 11 tags defined in "tags\&.h"\&. They are:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+artist \- name of the Artist
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+album \- name of the Album from which the song is taken
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+title \- title of the song
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+track \- track number on the album
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+name \- name of an audio stream
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+genre \- keywords that place the song in one or more aesthetic baskets
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+date \- date the song was recorded (not when it was ripped ;\-)
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+composer \- who wrote the song
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+performer \- principal soloist or performer
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+comment \- typically something attached by the ripper
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+disc \- disc number (in a set)\&. Derived from the ID3 TPOS tag\&.
+.RE
+.sp
+The MPD concept of a tag is not confined to MP3 encoded audio\&. Vorbis bitstreams, for example, may be prefaced with a comment header from which tag information can be extracted\&. Ultimately though, the encoder decides what, if any, scope specifying metadata is available\&.
+.SH "AUTHOR"
+.sp
+Written by Ali Polatel, <polatel@itu\&.edu\&.tr>
+.SH "COPYING"
+.sp
+Copyright \(co 2008 Ali Polatel\&. Free use of this software is granted under the terms of the GNU General Public License (GPL)\&.
+.SH "Notes"
+.IP " 1." 4
+polatel@itu.edu.tr
+.RS 4
+\%mailto:polatel@itu.edu.tr
+.RE

@@ -1,0 +1,292 @@
+// boogie man page
+// vim: set ts=4 sts=4 et tw=80 ft=asciidoc :
+// Copyright 2008 Ali Polatel <polatel@itu.edu.tr>
+// Distributed under the terms of the GNU General Public License v2
+BOOGIE(1)
+=========
+:Author: Ali Polatel
+:Email: polatel@itu.edu.tr
+:man source: Boogie
+:man version: 0.01
+:man manual: Boogie Manual
+
+NAME
+----
+boogie - Program for controlling Music Player Daemon (MPD)
+
+SYNOPSIS
+--------
+*boogie* ['-ns'] ['command'] ['command args']...
+
+DESCRIPTION
+-----------
+boogie is a client for MPD, the Music Player Daemon. boogie connects to a MPD
+and controls it according to commands and arguments passed to it. If no
+arguments are passed, current status is given.
+In addition to these, boogie has a console mode to interactively control MPD.
+
+OPTIONS
+-------
+*-ns, --no-status*::
+    Prevents the current song status from being printed on completion of some of
+    the commands.
+
+COMMANDS
+--------
+Boogie Commands
+~~~~~~~~~~~~~~~
+*help*::
+    Display help and exit.
+
+*console*::
+    Launch mpd shell.
+
+MPD Commands
+~~~~~~~~~~~~
+Admin Commands
+^^^^^^^^^^^^^^
+*disableoutput <output #>*::
+    Turns an output off, output number is required.
+
+*enableoutput <output #>*::
+    Turns an output on, output number is required.
+
+*kill*::
+    Stop MPD from running, in a safe way.
+
+*update [<path>...]*::
+    Scan path for updates. path defaults to the root MPD's music_directory.
+    After initiating an update, the update is assigned an update job id and is
+    displayed in status, each update incrementing the update job id by 1.
+    Using more than one path argument is more efficient than running this
+    command more than once since the former uses command list.
+
+Informational Commands
+^^^^^^^^^^^^^^^^^^^^^^
+*commands*::
+    Show a list of commands the current user has access to.
+
+*notcommands*::
+    Show a list of commands the current user does *not* have access to.
+
+*outputs*::
+    Show information about all outputs.
+
+*stats*::
+    Display statistics about MPD.
+
+*status*::
+    Report the current status of MPD.
+
+*tagtypes*::
+    Get a list of available song metadata.
+
+*urlhandlers*::
+    Get a list of available URL handlers.
+
+Database Commands
+^^^^^^^^^^^^^^^^^
+*count <type> <query>*::
+    Retrieve the number of songs and their total playtime in the database
+    matching <query>. See SCOPE SPECIFIERS for more information about <type>.
+
+*find <type> <query>*::
+    Finds songs in the database with a case sensitive, exact match to <query>.
+    See SCOPE SPECIFIERS for more information about <type>.
+
+*list <type> [<type> <query>]*::
+    List all metadata of <type>, optionally limit the list by <query>. See SCOPE
+    SPECIFIERS for more information about <type>.
+
+*listall [<path>]*::
+    Lists all directories and filenames in <path> recursively.
+
+*listallinfo [<path>]*::
+    Lists all information in database about all music files in <path>
+    recursively.
+
+*lsinfo [<directory>]*::
+    List contents of <directory>, from the database.
+
+*lsplaylists [<prefix>]*::
+    List playlists starting with prefix.
+
+*search <type> <query>*::
+    Finds songs in the database with a case insensitive match to <query>.
+    See SCOPE SPECIFIERS for more information about <type>.
+
+Playlist Commands
+^^^^^^^^^^^^^^^^^
+*add <file>*::
+    Add a single file from the database to the playlist. This command increments
+    the playlist version by 1 for each song added to the playlist.
+
+*addid <file> [<position>]*::
+    Like add but returns a playlist id. Optional position argument allows the
+    inserting of <file> at that given position.
+
+*clear*::
+    Clears the current playlist, increment the playlist version by 1.
+
+*crop*::
+    Remove all but the currently playing song.
+
+*currentsong*::
+    Displays the metadata of the current song.
+
+*delete <position>*::
+    Delete the song at position from the playlist, increment the playlist
+    version by 1.
+
+*deleteid <songid #>*::
+    Delete song with the given id from playlist, increment the playlist version
+    by 1.
+
+*listplaylist <file>*::
+    List files in playlist.
+
+*listplaylistinfo <file>*::
+    List songs in playlist.
+
+*load <file>*::
+    Load the given playlist from the playlist directory, increment the playlist
+    version by the number of songs added.
+
+*move <from> <to>*::
+    Move song at <from> to <to> in the playlist, increment the playlist version
+    by 1.
+
+*moveid <songid #> <to>*::
+    Move song with id <songid> to <to> in the playlist, increment the playlist
+    version by 1.
+
+*playlist [<position>]*::
+    Display metadata for songs in the playlist.
+
+*playlistadd <file> <song path>*::
+    Add <song path> to playlist <file>.
+
+*playlistclear <file>*::
+    Clear playlist <file>.
+
+*playlistdelete <file> <songid #>*::
+    Delete song with id <songid> from playlist <file>.
+
+*playlistfind <type> <query>*::
+    Finds songs in the playlist with a case sensitive, exact match to <query>.
+    See SCOPE SPECIFIERS for more information about <type>.
+
+*playlistid <songid #>*::
+    Display metadata for songs in the playlist.
+
+*playlistmove <file> <songid #> <position>*::
+    Move song with id <songid> to <position> in playlist <file>.
+
+*playlistsearch <type> <query>*::
+    Finds songs in the playlist with a case insensitive match to <query>.
+    See SCOPE SPECIFIERS for more information about <type>.
+
+*plchanges <playlist_version>*::
+    Displays changed songs currently in the playlist since <playlist_version>.
+
+*plchangesposid <playlist_version>*::
+    Displays changed songs currently in the playlist since <playlist_version>,
+    but only return the position and the id.
+
+*rename <from> <to>*::
+    Rename playlist <from> to <to>.
+
+*rm <file>*::
+    Remove playlist.
+
+*save <file>*::
+    Saves the current playlist to <file> in the playlist directory.
+
+*seek [+-][HH:MM:SS]|<0-100>% [<song #>]*::
+    Seeks to the specified position in <song #>.
+
+*seekid [+-][HH:MM:SS]|<0-100>% [<songid #>]*::
+    Seeks to the specified position in <songid #>.
+
+*shuffle*::
+    Shuffles the current playlist, increments playlist version by 1.
+
+*stop*::
+    Stops the currently playing playlist.
+
+*swap <position> <position>*::
+    Swaps given positions, increments playlist version by 1.
+
+*swapid <songid #> <songid #>*::
+    Swaps positions of songs by song id's, increments playlist version by 1.
+
+*volume [+-]<num>*::
+    Sets volume to <num> or adjusts by [+-]<num>.
+
+Playback Commands
+^^^^^^^^^^^^^^^^^
+*crossfade [<seconds>]*::
+    Sets or displays crossfade settings.
+
+*next*::
+    Plays the next song in the current playlist.
+
+*pause*::
+    Pauses the currently playing song.
+
+*play [<position>]*::
+    Starts playing at <position> (default: 1)
+
+*playid [<songid #>]*::
+    Starts playing <songid #> (default: 1)
+
+*previous*::
+    Plays the previous song in the current playlist.
+
+*random <on|off>*::
+    Toggle random mode, or specify state.
+
+*repeat <on|off>*::
+    Toggle repeat mode, or specify state.
+
+*toggle*::
+    Toggles Play/Pause, plays if stopped.
+
+Miscellaneous Commands
+^^^^^^^^^^^^^^^^^^^^^^
+*version*::
+    Displays version of MPD.
+
+SCOPE SPECIFIERS
+----------------
+Commands such as find, list and search require arguments that modify the scope
+of their actions. Most of the MPD "scope specifiers" are derived from the ID3
+Tags used in MP3 files (see http://www.id3.org/). As of this writing, MPD groks
+the 11 tags defined in "tags.h". They are:
+
+* artist - name of the Artist
+* album  - name of the Album from which the song is taken
+* title - title of the song
+* track - track number on the album
+* name - name of an audio stream
+* genre - keywords that place the song in one or more aesthetic baskets
+* date - date the song was recorded (not when it was ripped ;-)
+* composer - who wrote the song
+* performer - principal soloist or performer
+* comment - typically something attached by the ripper
+* disc - disc number (in a set). Derived from the ID3 TPOS tag.
+
+The MPD concept of a tag is not confined to MP3 encoded audio. Vorbis
+bitstreams, for example, may be prefaced with a comment header from which tag
+information can be extracted. Ultimately though, the encoder decides what, if
+any, scope specifying metadata is available.
+
+AUTHOR
+------
+Written by Ali Polatel, <polatel@itu.edu.tr>
+
+COPYING
+-------
+Copyright © 2008 Ali Polatel. Free use of this software is
+granted under the terms of the GNU General Public License (GPL).
+
