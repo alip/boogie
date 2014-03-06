@@ -41,8 +41,8 @@ o.nosep = 1
 
 def exc_handler(cls, etype, value, tb):
     """Exception handler for mpd console."""
-    print(bold(red(_("error:"))) + " " +\
-            bold(green(etype.__name__ + ":")) + " " + bold(str(value)))
+    print((bold(red(_("error:"))) + " " +\
+            bold(green(etype.__name__ + ":")) + " " + bold(str(value))))
 ip.set_custom_exc((Exception,), exc_handler)
 
 def expose_magic(fn):

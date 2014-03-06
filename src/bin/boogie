@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set sw=4 ts=4 sts=4 et tw=80 :
 #
-# Copyright (c) 2008 Ali Polatel <alip@exherbo.org>
+# Copyright (c) 2008, 2014 Ali Polatel <alip@exherbo.org>
 #
 # This file is part of Boogie mpd client. Boogie is free software; you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
+
+from __future__ import print_function
 
 """Boogie mpd client
 """
@@ -46,10 +48,10 @@ def usage():
     p = os.popen(pager, "w")
     sys.stdout, p = p, sys.stdout
 
-    print _("Usage: %s [-ns] <command> [command args]...") % name
-    print _("%s version: %s") % (bold(name), version)
-    print
-    print bold(_("Options:"))
+    print(_("Usage: %s [-ns] <command> [command args]...") % name)
+    print(_("%s version: %s") % (bold(name), version))
+    print("")
+    print(bold(_("Options:")))
 
     # Extract command names and usage information of mpd commands.
     command_groups = {}
