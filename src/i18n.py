@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set sw=4 ts=4 sts=4 et tw=80 :
 #
-# Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+# Copyright (c) 2008 Ali Polatel <alip@exherbo.org>
 # depends on mercurial.i18n which is:
 # Copyright (c) 2005, 2006 Matt Mackall <mpm@selenic.com>
 #

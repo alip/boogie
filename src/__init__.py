@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set sw=4 ts=4 sts=4 et tw=80 :
 #
-# Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+# Copyright (c) 2008 Ali Polatel <alip@exherbo.org>
 #
 # This file is part of Boogie mpd client. Boogie is free software; you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -17,7 +17,7 @@
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 __name__ = "boogie"
-__author__ = "Ali Polatel <polatel@itu.edu.tr>"
+__author__ = "Ali Polatel <alip@exherbo.org>"
 __version__ = "0.01"
 __license__ = "GPL-2"
 

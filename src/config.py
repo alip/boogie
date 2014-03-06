@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set sw=4 ts=4 sts=4 et tw=80 :
 #
-# Copyright (c) 2008 Ali Polatel <polatel@itu.edu.tr>
+# Copyright (c) 2008 Ali Polatel <alip@exherbo.org>
 #
 # This file is part of Boogie mpd client. Boogie is free software; you can
 # redistribute it and/or modify it under the terms of the GNU General Public

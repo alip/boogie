@@ -1,11 +1,11 @@
 // boogie man page
 // vim: set ts=4 sts=4 et tw=80 ft=asciidoc :
-// Copyright 2008 Ali Polatel <polatel@itu.edu.tr>
+// Copyright 2008 Ali Polatel <alip@exherbo.org>
 // Distributed under the terms of the GNU General Public License v2
 BOOGIE(1)
 =========
 :Author: Ali Polatel
-:Email: polatel@itu.edu.tr
+:Email: alip@exherbo.org
 :man source: Boogie
 :man version: 0.01
 :man manual: Boogie Manual
@@ -283,7 +283,7 @@ any, scope specifying metadata is available.
 
 AUTHOR
 ------
-Written by Ali Polatel, <polatel@itu.edu.tr>
+Written by Ali Polatel, <alip@exherbo.org>
 
 COPYING
 -------
