@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set sw=4 ts=4 sts=4 et tw=80 :
 #
-# Copyright (c) 2008 Ali Polatel <alip@exherbo.org>
+# Copyright (c) 2008, 2014 Ali Polatel <alip@exherbo.org>
 #
 # This file is part of Boogie mpd client. Boogie is free software; you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -19,24 +19,28 @@
 """Boogie configuration"""
 
 import os
-import ConfigParser
+import sys
+if sys.hexversion >= 0x03000000:
+    from configparser import SafeConfigParser
+else:
+    from ConfigParser import SafeConfigParser
 
 # borrowed from mercurial.util
 # differences from SafeConfigParser:
 # - case-sensitive keys
 # - allows values that are not strings (this means that you may not
 #   be able to save the configuration to a file)
-class configParser(ConfigParser.SafeConfigParser):
+class configParser(SafeConfigParser):
     def optionxform(self, optionstr):
         return optionstr
 
     def set(self, section, option, value):
-        return ConfigParser.ConfigParser.set(self, section, option, value)
+        return configparser.ConfigParser.set(self, section, option, value)
 
     def _interpolate(self, section, option, rawval, vars):
         if not isinstance(rawval, str):
             return rawval
-        return ConfigParser.SafeConfigParser._interpolate(self, section,
+        return SafeConfigParser._interpolate(self, section,
                                                           option, rawval, vars)
 
 if "BOOGIE_CONFIG_DIR" in os.environ:
@@ -69,4 +73,3 @@ else:
 
 if not os.path.exists(console_dir):
     os.makedirs(console_dir)
-

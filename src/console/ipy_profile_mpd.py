@@ -41,8 +41,8 @@ o.nosep = 1
 
 def exc_handler(cls, etype, value, tb):
     """Exception handler for mpd console."""
-    print bold(red(_("error:"))) + " " +\
-            bold(green(etype.__name__ + ":")) + " " + bold(str(value))
+    print(bold(red(_("error:"))) + " " +\
+            bold(green(etype.__name__ + ":")) + " " + bold(str(value)))
 ip.set_custom_exc((Exception,), exc_handler)
 
 def expose_magic(fn):
@@ -55,8 +55,8 @@ def make_mpd_magic(command_name):
         args = args.split()
         if (mpd_command_dict[command_name][0] is not None and
                 len(args) not in mpd_command_dict[command_name][0]):
-            raise TypeError, _("%s takes one of %r arguments (%d given)") % (
-                    command_name, mpd_command_dict[command_name][0], len(args))
+            raise TypeError(_("%s takes one of %r arguments (%d given)") % (
+                    command_name, mpd_command_dict[command_name][0], len(args)))
 
         # Convert them to correct type
         typ = mpd_command_dict[command_name][1]
@@ -66,7 +66,7 @@ def make_mpd_magic(command_name):
                 try:
                     args[index] = typ[index](args[index])
                 except ValueError:
-                    raise ValueError, _("%r is not %s") % (args[index], typ)
+                    raise ValueError(_("%r is not %s") % (args[index], typ))
                 index += 1
 
         if args:
@@ -94,8 +94,8 @@ def connect(self, args=''):
     else:
         split_args = args.split()
         if len(split) != 2:
-            raise TypeError, _("%s takes %d or %d arguments (%d given)" %\
-                ("connect()", 0, 2, len(split_args)))
+            raise TypeError(_("%s takes %d or %d arguments (%d given)" %\
+                ("connect()", 0, 2, len(split_args))))
         else:
             host = split[0]
             port = int(split[1])
@@ -119,8 +119,8 @@ _thread.start_new_thread(_pinger, ())""" % (host, port))
 def disconnect(self, args=''):
     """Disconnect from mpd server."""
     if args:
-        raise TypeError, _("%s takes exactly %d arguments (%d given)") %\
-            ("disconnect()", 0, len(args.split()))
+        raise TypeError(_("%s takes exactly %d arguments (%d given)") %\
+            ("disconnect()", 0, len(args.split())))
 
     self.api.ex("""
 _disconnecting = True

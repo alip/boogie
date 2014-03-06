@@ -546,7 +546,7 @@ class Mpc(object):
             elif begin == end:
                 end+=1
 
-            printByName("delete", position=range(begin+1, end+1))
+            printByName("delete", position=list(range(begin+1, end+1)))
 
             self.mpc.command_list_ok_begin()
             diff = 0

@@ -68,7 +68,7 @@ class config(object):
         def fset(self, value):
             self.__ping_interval = float(value)
         def fdel(self):
-            print self.__delmsg
+            print(self.__delmsg)
         return locals()
 
     @prop
@@ -79,7 +79,7 @@ class config(object):
         def fset(self, value):
             self.__ret = bool(value)
         def fdel(self):
-            print self.__delmsg
+            print(self.__delmsg)
         return locals()
 
 def mpdshell(conn):

@@ -50,7 +50,7 @@ def colourify(string, colourfunc, **kwargs):
 
     # Form a regex string like "%\((id|pl|pos)\)s"
     regex = "%\(("
-    keys = kwargs.keys()
+    keys = list(kwargs.keys())
     for key in keys:
         regex += key
         if keys.index(key) + 1 != len(keys):
