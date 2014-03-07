@@ -21,11 +21,8 @@ from __future__ import print_function
 """Boogie mpd client
 """
 
-import os
-import sys
-import re
-import atexit
-import textwrap
+import os, sys
+import atexit, re, subprocess, textwrap
 
 import locale
 locale.setlocale(locale.LC_ALL, '')
@@ -45,8 +42,10 @@ def usage():
     name, version = (boogie.__name__, boogie.__version__)
 
     pager = os.environ.get("PAGER", "less")
-    p = os.popen(pager, "w")
-    sys.stdout, p = p, sys.stdout
+    p = subprocess.Popen(pager, stdin=subprocess.PIPE, stdout = sys.stdout,
+            stderr = sys.stderr, universal_newlines = True)
+    stdout_cpy = sys.stdout
+    sys.stdout = p.stdin
 
     print(_("Usage: %s [-ns] <command> [command args]...") % name)
     print(_("%s version: %s") % (bold(name), version))
@@ -96,7 +95,9 @@ def usage():
             wrapper.subsequent_indent = " " * (len(item) + 2)
             print(item + "  " + wrapper.fill(command_help))
 
-    p, sys.stdout = sys.stdout, p
+    p.stdin.close()
+    p.wait()
+    sys.stdout = stdout_cpy
 
 def main():
     """Main function that does everything."""
