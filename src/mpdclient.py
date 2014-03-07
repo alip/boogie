@@ -21,8 +21,8 @@
 import os
 import sys
 
-import mpd
 
+from boogie import mpd
 from boogie.config import config_data
 from boogie.templates import printByName, printError
 from boogie.util import parseTimeSpec, parseTimeStatus
@@ -197,7 +197,7 @@ class SmartMPDClient(mpd.MPDClient, object):
     def connect(self, host, port):
         self.__super.connect(host, port)
         # Get notcommands here to save bandwidth.
-        self.mpd_notcommands = self.__super.__getattr__("notcommands")()
+        self.mpd_notcommands = getattr(self.__super, "notcommands")()
 
     def authenticate(self, funcname):
         """authenticate with the server if not allowed to execute funcname."""
@@ -497,7 +497,7 @@ class Mpc(object):
 
     def crossfade(self, seconds=None):
         if seconds is None:
-            current_fade = self.mpc.status()["xfade"]
+            current_fade = self.mpc.status().get('xfade', 0)
             if self.output:
                 printByName("crossfade", seconds=None, current=current_fade)
         else:

@@ -37,7 +37,7 @@ from boogie.mpdclient import mpd_command_dict, Mpc
 from boogie.colour import bold
 from boogie.i18n import _
 
-mpd_commands = mpd_command_dict.keys()
+mpd_commands = list(mpd_command_dict.keys())
 mpd_commands.sort()
 
 def usage():
@@ -71,11 +71,11 @@ def usage():
         if len(definition) > max_length:
             max_length = len(definition)
 
-    print "-ns, --no-status" + " " * (max_length - 15),
-    print _("Prevent status from being printed on completion of some of the commands")
-    print bold(_("%s Commands:") % name)
-    print "help" + " " * (max_length - 2) + _("Display this help")
-    print "console" + " " * (max_length - 5) + _("Launch mpd shell")
+    print("-ns, --no-status" + " " * (max_length - 15), end="")
+    print(_("Prevent status from being printed on completion of some of the commands"))
+    print(bold(_("%s Commands:") % name))
+    print("help" + " " * (max_length - 2) + _("Display this help"))
+    print("console" + " " * (max_length - 5) + _("Launch mpd shell"))
 
     # Sort, wrap and print them out.
     wrapper = textwrap.TextWrapper()
@@ -86,7 +86,7 @@ def usage():
         _("Database Commands"), _("Playlist Commands"), _("Playback Commands"),
         _("Miscellaneous Commands"))
     for title in titles:
-        print bold(title + ":")
+        print(bold(title + ":"))
         for item in command_groups[title]:
             command = item.split(" ")[0]
             command_help = mpd_command_dict[command][6]
@@ -94,7 +94,7 @@ def usage():
             if len(item) != max_length:
                 item += " " * (max_length - len(item))
             wrapper.subsequent_indent = " " * (len(item) + 2)
-            print item + "  " + wrapper.fill(command_help)
+            print(item + "  " + wrapper.fill(command_help))
 
     p, sys.stdout = sys.stdout, p
 
@@ -132,13 +132,14 @@ def main():
         subcommand = config_data.get("alias", subcommand)
 
     if not subcommand in mpd_commands:
-        print >>sys.stderr, boogie.__name__ + ": " +\
-            _("'%s' is not a boogie command. See 'boogie help'.") % subcommand
+        print(boogie.__name__ + ": " +
+                _("'%s' is not a boogie command. See 'boogie help'.") % subcommand,
+                file=sys.stderr)
         sys.exit(1)
     elif (mpd_command_dict[subcommand][0] is not None and
             len(arguments) not in mpd_command_dict[subcommand][0]):
-        print >>sys.stderr, _("usage: %s %s %s") % (boogie.__name__, subcommand,
-                mpd_command_dict[subcommand][5])
+        print(_("usage: %s %s %s") % (boogie.__name__, subcommand,
+            mpd_command_dict[subcommand][5]), file=sys.stderr)
         sys.exit(1)
 
     # Convert them to correct type
@@ -148,8 +149,9 @@ def main():
             try:
                 arguments[index] = mpd_command_dict[subcommand][1][index](arguments[index])
             except ValueError:
-                print >>sys.stderr, _("usage: %s %s %s") % (boogie.__name__,
-                        subcommand, mpd_command_dict[subcommand][5])
+                print(_("usage: %s %s %s") % (boogie.__name__,
+                        subcommand, mpd_command_dict[subcommand][5]),
+                        file=sys.stderr)
                 sys.exit(1)
             index += 1
 

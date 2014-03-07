@@ -81,6 +81,6 @@ ${yellow(_("updating db:"))} ${bold("#" + status["updating_db"])}
         repeat = _("off")
 %>\
 ${yellow(_("volume"))}: ${green(status["volume"] + "%")} \
-${yellow(_("xfade"))}: ${green(status["xfade"] + "s")} \
+${yellow(_("xfade"))}: ${green(status.get('xfade', '0') + "s")} \
 ${yellow(_("random"))}: ${green(random)} \
 ${yellow(_("repeat"))}: ${green(repeat)}

@@ -21,5 +21,5 @@ __author__ = "Ali Polatel <alip@exherbo.org>"
 __version__ = "0.01"
 __license__ = "GPL-2"
 
-__all__ = [ "config", "i18n", "mpdclient", "templates", "util" ]
+__all__ = [ "config", "i18n", "mpd", "mpdclient", "templates", "util" ]
 

@@ -74,7 +74,7 @@ def renderByName(templatename, suffix=".txt", **kwargs):
 
 def printByName(templatename, **kwargs):
     """Render a template using its name and print."""
-    sys.stdout.write(renderByName(templatename, **kwargs))
+    sys.stdout.buffer.write(renderByName(templatename, **kwargs))
 
 def printError(templatename, **kwargs):
     """Render a template usıng ıts name and prınt to stderr."""
